@@ -550,7 +550,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 <div class="pages-track" id="pagesTrack">
 
 <!-- PAGE 0: JOURNAL -->
-<div class="page" id="page-journal">
+<div class="page" id="page-journal" style="display:block;">
   <div class="stats-header">
     <h2>your <em>journal</em></h2>
     <div class="greeting" id="journalGreeting"></div>
@@ -1383,7 +1383,7 @@ function initStats(){streakPills('statsStreak');histOffset=0;renderHistory();ren
 
 // ═══ SWIPE NAV ═══
 const PAGE_COUNT=6;
-let currentPageIdx=0;
+let currentPageIdx=-1;
 
 function showPage(idx){
   currentPageIdx=idx;
