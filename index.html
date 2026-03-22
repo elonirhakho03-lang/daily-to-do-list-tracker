@@ -1399,42 +1399,59 @@ function showPage(idx,btn){
   if(idx===5)initExams();
 }
 
-// ═══ SWIPE (document level - works everywhere) ═══
+// ═══ SWIPE ═══
+let swipeLocked=false;
+
 document.addEventListener('touchstart',e=>{
-  // Ignore if touching input, textarea, select, button
   const tag=e.target.tagName.toLowerCase();
   if(['input','textarea','select','button','a'].includes(tag))return;
   touchStartX=e.touches[0].clientX;
   touchStartY=e.touches[0].clientY;
   isSwiping=false;
+  swipeLocked=false;
 },{passive:true});
 
 document.addEventListener('touchmove',e=>{
-  if(!touchStartX)return;
+  if(!touchStartX||swipeLocked)return;
   const tag=e.target.tagName.toLowerCase();
   if(['input','textarea','select'].includes(tag))return;
   const dx=e.touches[0].clientX-touchStartX;
   const dy=e.touches[0].clientY-touchStartY;
-  if(!isSwiping&&Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>10){
-    isSwiping=true;
+  // Determine direction on first significant move
+  if(!isSwiping&&Math.abs(dx)<5&&Math.abs(dy)<5)return;
+  if(!isSwiping){
+    if(Math.abs(dx)>Math.abs(dy)){
+      isSwiping=true; // horizontal - swipe between pages
+    } else {
+      swipeLocked=true; // vertical - let page scroll normally
+      return;
+    }
   }
   if(isSwiping){
-    e.preventDefault(); // prevent vertical scroll during horizontal swipe
+    e.preventDefault();
     const track=document.getElementById('pagesTrack');
-    track.style.transition='none';
-    track.style.transform=`translateX(calc(-${currentPageIdx*100}% + ${dx}px))`;
+    if(track){
+      track.style.transition='none';
+      track.style.transform=`translateX(calc(-${currentPageIdx*100}% + ${dx}px))`;
+    }
   }
-},{passive:false}); // passive:false needed to call preventDefault
+},{passive:false});
 
 document.addEventListener('touchend',e=>{
-  if(!isSwiping){touchStartX=0;return;}
+  if(!isSwiping){touchStartX=0;swipeLocked=false;return;}
   const dx=e.changedTouches[0].clientX-touchStartX;
   const track=document.getElementById('pagesTrack');
-  track.style.transition='transform .35s cubic-bezier(.4,0,.2,1)';
-  if(dx<-50&&currentPageIdx<PAGE_COUNT-1)showPage(currentPageIdx+1);
-  else if(dx>50&&currentPageIdx>0)showPage(currentPageIdx-1);
-  else track.style.transform=`translateX(-${currentPageIdx*100}%)`;
-  touchStartX=0;isSwiping=false;
+  if(track) track.style.transition='transform .35s cubic-bezier(.4,0,.2,1)';
+  if(dx<-50&&currentPageIdx<PAGE_COUNT-1){
+    currentPageIdx++;
+    showPage(currentPageIdx,document.querySelectorAll('.nav-btn')[currentPageIdx]);
+  } else if(dx>50&&currentPageIdx>0){
+    currentPageIdx--;
+    showPage(currentPageIdx,document.querySelectorAll('.nav-btn')[currentPageIdx]);
+  } else {
+    if(track) track.style.transform=`translateX(-${currentPageIdx*100}%)`;
+  }
+  touchStartX=0;isSwiping=false;swipeLocked=false;
 },{passive:true});
 
 // ═══ EXAM TRACKER ═══
@@ -1556,288 +1573,6 @@ function renderExamList(){
 
 function initExams(){
   renderExamList();
-}
-
-// ═══ SWIPE NAV ═══
-const PAGE_COUNT=6;
-let touchStartX=0,touchStartY=0,isSwiping=false;
-
-function showPage(idx,btn){
-  currentPageIdx=idx;
-  const track=document.getElementById('pagesTrack');
-  track.style.transition='transform .35s cubic-bezier(.4,0,.2,1)';
-  track.style.transform=`translateX(-${idx*100}%)`;
-  document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
-  for(let i=0;i<6;i++){const d=document.getElementById('ndot'+i);if(d)d.classList.toggle('active',i===idx);}
-  window.scrollTo({top:0,behavior:'smooth'});
-  // Page order: 0=journal,1=schedule,2=today,3=study,4=stats,5=exams
-  if(idx===0)initJournal();
-  if(idx===1)initSchedule();
-  if(idx===3){renderTools();const notes=get(K.studyNotes);if(notes)document.getElementById('studyNotes').value=notes;}
-  if(idx===4)initStats();
-  if(idx===5)initExams();
-}
-
-// ═══ SWIPE (document level - works everywhere) ═══
-document.addEventListener('touchstart',e=>{
-  // Ignore if touching input, textarea, select, button
-  const tag=e.target.tagName.toLowerCase();
-  if(['input','textarea','select','button','a'].includes(tag))return;
-  touchStartX=e.touches[0].clientX;
-  touchStartY=e.touches[0].clientY;
-  isSwiping=false;
-},{passive:true});
-
-document.addEventListener('touchmove',e=>{
-  if(!touchStartX)return;
-  const tag=e.target.tagName.toLowerCase();
-  if(['input','textarea','select'].includes(tag))return;
-  const dx=e.touches[0].clientX-touchStartX;
-  const dy=e.touches[0].clientY-touchStartY;
-  if(!isSwiping&&Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>10){
-    isSwiping=true;
-  }
-  if(isSwiping){
-    e.preventDefault(); // prevent vertical scroll during horizontal swipe
-    const track=document.getElementById('pagesTrack');
-    track.style.transition='none';
-    track.style.transform=`translateX(calc(-${currentPageIdx*100}% + ${dx}px))`;
-  }
-},{passive:false}); // passive:false needed to call preventDefault
-
-document.addEventListener('touchend',e=>{
-  if(!isSwiping){touchStartX=0;return;}
-  const dx=e.changedTouches[0].clientX-touchStartX;
-  const track=document.getElementById('pagesTrack');
-  track.style.transition='transform .35s cubic-bezier(.4,0,.2,1)';
-  if(dx<-50&&currentPageIdx<PAGE_COUNT-1)showPage(currentPageIdx+1);
-  else if(dx>50&&currentPageIdx>0)showPage(currentPageIdx-1);
-  else track.style.transform=`translateX(-${currentPageIdx*100}%)`;
-  touchStartX=0;isSwiping=false;
-},{passive:true});
-
-// ═══ EXAM TRACKER ═══
-const DEFAULT_EXAMS=[
-  {id:'ssc',name:'SSC',fullName:'Staff Selection Commission',icon:'📋',url:'https://ssc.nic.in',dates:{},notes:''},
-  {id:'upsc',name:'UPSC',fullName:'Civil Services Exam',icon:'🏛️',url:'https://upsc.gov.in',dates:{},notes:''},
-  {id:'neet',name:'NEET',fullName:'National Eligibility cum Entrance Test',icon:'🏥',url:'https://neet.nta.nic.in',dates:{},notes:''},
-  {id:'jee',name:'JEE',fullName:'Joint Entrance Examination',icon:'⚙️',url:'https://jeemain.nta.ac.in',dates:{},notes:''},
-  {id:'ibps',name:'IBPS/SBI',fullName:'Banking Exams',icon:'🏦',url:'https://ibps.in',dates:{},notes:''},
-  {id:'rrb',name:'Railway RRB',fullName:'Railway Recruitment Board',icon:'🚂',url:'https://indianrailways.gov.in',dates:{},notes:''},
-  {id:'cds',name:'CDS',fullName:'Combined Defence Services',icon:'🎖️',url:'https://upsc.gov.in',dates:{},notes:''},
-  {id:'gate',name:'GATE',fullName:'Graduate Aptitude Test in Engineering',icon:'🔬',url:'https://gate2025.iitr.ac.in',dates:{},notes:''},
-];
-const DATE_TYPES=[
-  {key:'regOpen',label:'Registration Opens'},
-  {key:'regClose',label:'Registration Closes'},
-  {key:'admit',label:'Admit Card'},
-  {key:'exam',label:'Exam Date'},
-  {key:'result',label:'Result Date'},
-];
-const NOTICES=[
-  {text:'SSC CGL 2025 notification released! Registration opens soon.',date:'2025-03'},
-  {text:'UPSC CSE 2025 notification out. Check official site for dates.',date:'2025-02'},
-];
-
-function getExams(){return get('dr_exams_v1')||DEFAULT_EXAMS.map(e=>({...e}));}
-function saveExams(exams){set('dr_exams_v1',exams);}
-
-function daysUntil(dateStr){
-  if(!dateStr)return null;
-  const d=new Date(dateStr),now=new Date();
-  now.setHours(0,0,0,0);d.setHours(0,0,0,0);
-  return Math.round((d-now)/86400000);
-}
-function countdownBadge(dateStr){
-  const days=daysUntil(dateStr);
-  if(days===null)return'';
-  if(days<0)return`<span class="countdown-badge" style="background:rgba(150,150,150,.2);color:var(--text-soft)">Passed</span>`;
-  if(days===0)return`<span class="countdown-badge soon">Today!</span>`;
-  if(days<=7)return`<span class="countdown-badge soon">${days}d left</span>`;
-  if(days<=30)return`<span class="countdown-badge upcoming">${days}d left</span>`;
-  return`<span class="countdown-badge future">${days}d left</span>`;
-}
-
-function renderExams(){
-  const exams=getExams();
-  // Notice board
-  const nb=document.getElementById('examNoticeBoard');
-  if(nb&&NOTICES.length){
-    nb.innerHTML=`<div class="notice-banner"><h3>📢 Latest Updates</h3>${NOTICES.map(n=>`<div class="notice-item"><div class="notice-dot"></div><div>${n.text}</div></div>`).join('')}</div>`;
-  }
-  // Exam list
-  const el=document.getElementById('examList');if(!el)return;
-  el.innerHTML=exams.map((exam,i)=>{
-    const nextDate=DATE_TYPES.map(dt=>exam.dates[dt.key]).filter(Boolean).sort()[0];
-    const badge=nextDate?countdownBadge(nextDate):'';
-    return`<div class="exam-card">
-      <div class="exam-header" onclick="toggleExam(${i})">
-        <span class="exam-icon">${exam.icon||'🎯'}</span>
-        <div class="exam-name"><div class="en">${escH(exam.name)} ${badge}</div><div class="es">${escH(exam.fullName||'')}</div></div>
-        <span class="exam-toggle" id="etoggle-${i}">›</span>
-      </div>
-      <div class="exam-body" id="ebody-${i}">
-        <div class="exam-dates">
-          ${DATE_TYPES.map(dt=>`<div class="exam-date-row">
-            <span class="exam-date-label">${dt.label}</span>
-            <input type="date" class="exam-date-input" id="ed-${i}-${dt.key}" value="${exam.dates[dt.key]||''}" onchange="saveExamDate(${i},'${dt.key}',this.value)"/>
-            ${exam.dates[dt.key]?countdownBadge(exam.dates[dt.key]):''}
-          </div>`).join('')}
-        </div>
-        <textarea class="exam-notes-input" id="enotes-${i}" placeholder="Notes about this exam..." onchange="saveExamNotes(${i},this.value)">${escH(exam.notes||'')}</textarea>
-        <div class="exam-actions">
-          ${exam.url?`<a href="${exam.url}" target="_blank" class="exam-link-btn">🌐 Official Site</a>`:''}
-          <button class="exam-del-btn" onclick="deleteExam(${i})">🗑️ Remove</button>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function toggleExam(i){
-  const body=document.getElementById('ebody-'+i);
-  const toggle=document.getElementById('etoggle-'+i);
-  const isHidden=body.style.display==='none';
-  body.style.display=isHidden?'block':'none';
-  toggle.style.transform=isHidden?'rotate(90deg)':'rotate(0deg)';
-}
-function saveExamDate(i,key,val){
-  const exams=getExams();exams[i].dates=exams[i].dates||{};exams[i].dates[key]=val;saveExams(exams);renderExams();
-  // Keep open
-  setTimeout(()=>{const b=document.getElementById('ebody-'+i);if(b)b.classList.add('open');const t=document.getElementById('etoggle-'+i);if(t)t.style.transform='rotate(90deg)';},50);
-}
-function saveExamNotes(i,val){const exams=getExams();exams[i].notes=val;saveExams(exams);}
-function deleteExam(i){if(!confirm('Remove this exam?'))return;const exams=getExams();exams.splice(i,1);saveExams(exams);renderExams();}
-
-function openExamModal(){document.getElementById('examName').value='';document.getElementById('examUrl').value='';document.getElementById('examIcon').value='';document.getElementById('examModal').classList.add('show');}
-document.getElementById('saveExamBtn').onclick=()=>{
-  const name=document.getElementById('examName').value.trim();if(!name)return;
-  const url=document.getElementById('examUrl').value.trim();
-  const icon=document.getElementById('examIcon').value.trim()||'🎯';
-  const exams=getExams();exams.push({id:'custom_'+uid(),name,fullName:'',icon,url,dates:{},notes:''});
-  saveExams(exams);renderExams();document.getElementById('examModal').classList.remove('show');
-};
-document.getElementById('cancelExamBtn').onclick=()=>document.getElementById('examModal').classList.remove('show');
-document.getElementById('examModal').onclick=e=>{if(e.target===document.getElementById('examModal'))document.getElementById('examModal').classList.remove('show');};
-
-// ═══ PWA ═══
-let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;document.getElementById('installBanner').classList.remove('hidden');});
-document.getElementById('installBtn').onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;document.getElementById('installBanner').classList.add('hidden');};
-document.getElementById('closeInstall').onclick=()=>document.getElementById('installBanner').classList.add('hidden');
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
-
-// ═══ EXAM TRACKER ═══
-const EXAM_KEY='dr_exams_v1';
-function getExams(){return get(EXAM_KEY)||[];}
-function saveExams(e){set(EXAM_KEY,e);}
-
-function addPresetExam(name,url,icon){
-  const exams=getExams();
-  if(exams.find(e=>e.name===name)){
-    // Already exists - just open it
-    renderExams();
-    return;
-  }
-  exams.push({
-    id:uid(),name,fullName:name,url,icon,
-    dates:{regOpen:'',regClose:'',admit:'',exam:'',result:''},
-    notes:''
-  });
-  saveExams(exams);renderExams();
-  // Show success feedback
-  const btn=event.target;
-  const orig=btn.textContent;
-  btn.textContent='✓ Added!';
-  btn.style.background='linear-gradient(135deg,rgba(123,191,181,.4),rgba(168,216,176,.4))';
-  setTimeout(()=>{btn.textContent=orig;btn.style.background='';},2000);
-}
-
-function openExamModal(){
-  const name=prompt('Exam name (e.g. MPSC, State PSC, CLAT):');
-  if(!name||!name.trim())return;
-  const url=prompt('Official website URL (leave blank to skip):','');
-  const exams=getExams();
-  exams.push({
-    id:uid(),
-    name:name.trim(),
-    fullName:name.trim(),
-    url:url&&url.startsWith('http')?url:'',
-    icon:'📋',
-    dates:{regOpen:'',regClose:'',admit:'',exam:'',result:''},
-    notes:''
-  });
-  saveExams(exams);
-  renderExams();
-  // Scroll to bottom to see new exam
-  setTimeout(()=>{
-    const list=document.getElementById('examList');
-    if(list)list.lastElementChild?.scrollIntoView({behavior:'smooth'});
-  },300);
-}
-
-function deleteExam(id){
-  if(!confirm('Remove this exam?'))return;
-  saveExams(getExams().filter(e=>e.id!==id));renderExams();
-}
-
-function updateExamDate(id,field,val){
-  const exams=getExams();const e=exams.find(e=>e.id===id);
-  if(e){e[field]=val;saveExams(exams);}
-  renderExamCountdowns();
-}
-
-function getCountdown(dateStr){
-  if(!dateStr)return null;
-  const d=new Date(dateStr),now=new Date();
-  now.setHours(0,0,0,0);d.setHours(0,0,0,0);
-  const diff=Math.round((d-now)/86400000);
-  if(diff<0)return{label:'Passed',cls:'passed'};
-  if(diff===0)return{label:'Today!',cls:'soon'};
-  if(diff<=7)return{label:diff+'d left',cls:'soon'};
-  if(diff<=30)return{label:diff+'d left',cls:'upcoming'};
-  return{label:diff+'d left',cls:'upcoming'};
-}
-
-function renderExams(){
-  const exams=getExams();
-  const list=document.getElementById('examList');
-  const empty=document.getElementById('examEmptyState');
-  if(!list)return;
-  if(!exams.length){if(empty)empty.style.display='block';list.innerHTML='';return;}
-  if(empty)empty.style.display='none';
-  list.innerHTML=exams.map(e=>`
-    <div class="exam-card" id="ec-${e.id}">
-      <button class="exam-del" onclick="deleteExam('${e.id}')">✕</button>
-      <div class="exam-card-header">
-        <span class="exam-icon">${e.icon||'📋'}</span>
-        <span class="exam-name">${escH(e.name)}</span>
-        ${e.url?`<a class="exam-link" href="${e.url}" target="_blank" rel="noopener">🔗 Official Site</a>`:''}
-      </div>
-      <div class="exam-dates">
-        ${buildDateRow(e.id,'regOpen','📅 Registration Open',e.regOpen)}
-        ${buildDateRow(e.id,'regClose','⏰ Registration Close',e.regClose)}
-        ${buildDateRow(e.id,'admitCard','🪪 Admit Card',e.admitCard)}
-        ${buildDateRow(e.id,'examDate','✍️ Exam Date',e.examDate)}
-        ${buildDateRow(e.id,'resultDate','📊 Result Date',e.resultDate)}
-      </div>
-    </div>
-  `).join('');
-}
-
-function buildDateRow(id,field,label,val){
-  const cd=getCountdown(val);
-  return`<div class="exam-date-row">
-    <span class="exam-date-label">${label}</span>
-    <input type="date" class="exam-date-input" value="${val||''}" onchange="updateExamDate('${id}','${field}',this.value)"/>
-    ${cd?`<span class="exam-countdown ${cd.cls}">${cd.label}</span>`:''}
-  </div>`;
-}
-
-function renderExamCountdowns(){renderExams();}
-
-function initExams(){
-  renderExams();
 }
 
 // ═══ INIT ═══
