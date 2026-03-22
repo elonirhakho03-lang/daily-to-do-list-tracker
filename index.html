@@ -54,7 +54,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 
 /* ══ SWIPE PAGES ══ */
 .pages-container{position:relative;z-index:1;width:100%;}
-.pages-track{display:block;}
+.pages-track{display:block;position:relative;z-index:1;}
 .page{display:none;position:relative;animation:fadeUp .3s ease;}
 .page.active{display:block;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -823,12 +823,12 @@ e.g. Morning run, Study session, Movie night"></textarea>
     <div class="nav-dot" id="ndot5"></div>
   </div>
   <div class="nav-buttons-row">
-    <button class="nav-btn active" onclick="showPage(0,this)"><span class="nav-icon">💭</span>Journal</button>
-    <button class="nav-btn" onclick="showPage(1,this)"><span class="nav-icon">📅</span>Schedule</button>
-    <button class="nav-btn" onclick="showPage(2,this)"><span class="nav-icon">🏃</span>Today</button>
-    <button class="nav-btn" onclick="showPage(3,this)"><span class="nav-icon">📚</span>Study</button>
-    <button class="nav-btn" onclick="showPage(4,this)"><span class="nav-icon">📊</span>Stats</button>
-    <button class="nav-btn" onclick="showPage(5,this)"><span class="nav-icon">🎯</span>Exams</button>
+    <button class="nav-btn active" onclick="showPage(0)"><span class="nav-icon">💭</span>Journal</button>
+    <button class="nav-btn" onclick="showPage(1)"><span class="nav-icon">📅</span>Schedule</button>
+    <button class="nav-btn" onclick="showPage(2)"><span class="nav-icon">🏃</span>Today</button>
+    <button class="nav-btn" onclick="showPage(3)"><span class="nav-icon">📚</span>Study</button>
+    <button class="nav-btn" onclick="showPage(4)"><span class="nav-icon">📊</span>Stats</button>
+    <button class="nav-btn" onclick="showPage(5)"><span class="nav-icon">🎯</span>Exams</button>
   </div>
 </nav>
 
@@ -1385,16 +1385,26 @@ function initStats(){streakPills('statsStreak');histOffset=0;renderHistory();ren
 const PAGE_COUNT=6;
 let currentPageIdx=0;
 
-function showPage(idx,btn){
+function showPage(idx){
+  if(idx===currentPageIdx) return;
   currentPageIdx=idx;
-  // Show/hide pages
-  document.querySelectorAll('.page').forEach((p,i)=>p.classList.toggle('active',i===idx));
-  // Update nav buttons
+  // Hide all pages, show selected with animation
+  document.querySelectorAll('.page').forEach((p,i)=>{
+    if(i===idx){
+      p.style.display='block';
+      p.style.animation='none';
+      p.offsetHeight; // force reflow
+      p.style.animation='fadeUp .3s ease';
+    } else {
+      p.style.display='none';
+    }
+  });
+  // Update nav
   document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
-  // Update indicator dots
+  // Update dots
   for(let i=0;i<6;i++){const d=document.getElementById('ndot'+i);if(d)d.classList.toggle('active',i===idx);}
-  // Scroll to top
-  window.scrollTo({top:0,behavior:'smooth'});
+  // Scroll to top instantly
+  window.scrollTo(0,0);
   // Init page content
   if(idx===0)initJournal();
   if(idx===1)initSchedule();
@@ -1533,12 +1543,9 @@ function initApp(){
     if(el)el.addEventListener('keydown',e=>{if(e.key==='Enter')addTask(s);});
   });
   loadTasks();renderAll();
-  initJournal();
-  // Always start on journal page
-  currentPageIdx=0;
-  document.querySelectorAll('.page').forEach((p,i)=>p.classList.toggle('active',i===0));
-  document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
-  for(let i=0;i<6;i++){const d=document.getElementById('ndot'+i);if(d)d.classList.toggle('active',i===0);}
+  // Start on journal page (page 0)
+  currentPageIdx=-1;
+  showPage(0);
   setInterval(()=>{checkOverdue();},60000);
   if('Notification'in window&&Notification.permission==='granted')scheduleNotifs();
 }
