@@ -550,7 +550,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 <div class="pages-track" id="pagesTrack">
 
 <!-- PAGE 0: JOURNAL -->
-<div class="page" id="page-journal" style="display:block;">
+<div class="page active" id="page-journal">
   <div class="stats-header">
     <h2>your <em>journal</em></h2>
     <div class="greeting" id="journalGreeting"></div>
@@ -1387,14 +1387,14 @@ let currentPageIdx=-1;
 
 function showPage(idx){
   currentPageIdx=idx;
-  // Use CSS classes - clean and reliable
-  const pages=document.querySelectorAll('.page');
-  pages.forEach((p,i)=>{
-    p.classList.toggle('active',i===idx);
+  // Use inline styles — most reliable, overrides everything
+  document.querySelectorAll('.page').forEach((p,i)=>{
+    p.style.display = i===idx ? 'block' : 'none';
+    p.classList.toggle('active', i===idx);
   });
-  // Update nav buttons
+  // Update nav
   document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
-  // Update indicator dots
+  // Update dots
   for(let i=0;i<6;i++){const d=document.getElementById('ndot'+i);if(d)d.classList.toggle('active',i===idx);}
   // Scroll to top
   window.scrollTo(0,0);
