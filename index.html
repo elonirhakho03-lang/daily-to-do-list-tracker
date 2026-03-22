@@ -42,12 +42,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .onboard-dot.active{background:var(--rose);width:20px;border-radius:4px;}
 
 /* ══ NAV ══ */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:9999;display:flex;flex-direction:column;align-items:stretch;background:rgba(240,235,235,0.96);backdrop-filter:blur(20px);border-top:1.5px solid rgba(255,255,255,0.9);box-shadow:0 -4px 24px rgba(180,140,130,0.15);}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:9999;pointer-events:auto;display:flex;flex-direction:column;align-items:stretch;background:rgba(240,235,235,0.96);backdrop-filter:blur(20px);border-top:1.5px solid rgba(255,255,255,0.9);box-shadow:0 -4px 24px rgba(180,140,130,0.15);}
 .nav-indicator-row{display:flex;justify-content:center;gap:5px;padding:7px 0 2px;}
 .nav-dot{width:5px;height:5px;border-radius:50%;background:rgba(150,130,130,.25);transition:all .3s;}
 .nav-dot.active{width:18px;border-radius:3px;background:var(--rose);}
 .nav-buttons-row{display:flex;justify-content:space-around;align-items:center;padding:2px 0 max(6px,env(safe-area-inset-bottom));}
-.nav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;color:var(--text-soft);padding:4px 8px;border-radius:14px;transition:all .2s;}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;color:var(--text-soft);padding:4px 8px;border-radius:14px;transition:all .2s;pointer-events:auto;position:relative;z-index:10000;}
 .nav-btn .nav-icon{font-size:1.2rem;line-height:1;}
 .nav-btn.active{color:var(--rose);}
 .nav-btn.active .nav-icon{transform:scale(1.15);}
@@ -546,8 +546,6 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 <div class="tip" id="tip"></div>
 
 <!-- ══ SWIPEABLE PAGES ══ -->
-<div class="pages-container" id="pagesContainer">
-<div class="pages-track" id="pagesTrack">
 
 <!-- PAGE 0: JOURNAL -->
 <div class="page active" id="page-journal">
@@ -785,8 +783,7 @@ e.g. Morning run, Study session, Movie night"></textarea>
     </div>
   </div>
 </div>
-</div><!-- end track -->
-</div><!-- end container -->
+
 
 <nav class="bottom-nav">
   <div class="nav-indicator-row">
