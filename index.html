@@ -53,9 +53,11 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .nav-btn.active .nav-icon{transform:scale(1.15);}
 
 /* ══ SWIPE PAGES ══ */
-.pages-container{position:relative;z-index:1;overflow:hidden;width:100%;}
-.pages-track{display:flex;transition:transform .35s cubic-bezier(.4,0,.2,1);will-change:transform;}
-.page{flex:0 0 100%;width:100%;min-width:100%;position:relative;}
+.pages-container{position:relative;z-index:1;width:100%;}
+.pages-track{display:block;}
+.page{display:none;position:relative;animation:fadeUp .3s ease;}
+.page.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 /* ══ HEADERS ══ */
 .page-header{text-align:center;padding:44px 20px 20px;}
@@ -1381,78 +1383,25 @@ function initStats(){streakPills('statsStreak');histOffset=0;renderHistory();ren
 
 // ═══ SWIPE NAV ═══
 const PAGE_COUNT=6;
-let touchStartX=0,touchStartY=0,isSwiping=false;
+let currentPageIdx=0;
 
 function showPage(idx,btn){
   currentPageIdx=idx;
-  const track=document.getElementById('pagesTrack');
-  track.style.transition='transform .35s cubic-bezier(.4,0,.2,1)';
-  track.style.transform=`translateX(-${idx*100}%)`;
+  // Show/hide pages
+  document.querySelectorAll('.page').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  // Update nav buttons
   document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  // Update indicator dots
   for(let i=0;i<6;i++){const d=document.getElementById('ndot'+i);if(d)d.classList.toggle('active',i===idx);}
+  // Scroll to top
   window.scrollTo({top:0,behavior:'smooth'});
-  // Page order: 0=journal,1=schedule,2=today,3=study,4=stats,5=exams
+  // Init page content
   if(idx===0)initJournal();
   if(idx===1)initSchedule();
   if(idx===3){renderTools();const notes=get(K.studyNotes);if(notes)document.getElementById('studyNotes').value=notes;}
   if(idx===4)initStats();
   if(idx===5)initExams();
 }
-
-// ═══ SWIPE ═══
-let swipeLocked=false;
-
-document.addEventListener('touchstart',e=>{
-  const tag=e.target.tagName.toLowerCase();
-  if(['input','textarea','select','button','a'].includes(tag))return;
-  touchStartX=e.touches[0].clientX;
-  touchStartY=e.touches[0].clientY;
-  isSwiping=false;
-  swipeLocked=false;
-},{passive:true});
-
-document.addEventListener('touchmove',e=>{
-  if(!touchStartX||swipeLocked)return;
-  const tag=e.target.tagName.toLowerCase();
-  if(['input','textarea','select'].includes(tag))return;
-  const dx=e.touches[0].clientX-touchStartX;
-  const dy=e.touches[0].clientY-touchStartY;
-  // Determine direction on first significant move
-  if(!isSwiping&&Math.abs(dx)<5&&Math.abs(dy)<5)return;
-  if(!isSwiping){
-    if(Math.abs(dx)>Math.abs(dy)){
-      isSwiping=true; // horizontal - swipe between pages
-    } else {
-      swipeLocked=true; // vertical - let page scroll normally
-      return;
-    }
-  }
-  if(isSwiping){
-    e.preventDefault();
-    const track=document.getElementById('pagesTrack');
-    if(track){
-      track.style.transition='none';
-      track.style.transform=`translateX(calc(-${currentPageIdx*100}% + ${dx}px))`;
-    }
-  }
-},{passive:false});
-
-document.addEventListener('touchend',e=>{
-  if(!isSwiping){touchStartX=0;swipeLocked=false;return;}
-  const dx=e.changedTouches[0].clientX-touchStartX;
-  const track=document.getElementById('pagesTrack');
-  if(track) track.style.transition='transform .35s cubic-bezier(.4,0,.2,1)';
-  if(dx<-50&&currentPageIdx<PAGE_COUNT-1){
-    currentPageIdx++;
-    showPage(currentPageIdx,document.querySelectorAll('.nav-btn')[currentPageIdx]);
-  } else if(dx>50&&currentPageIdx>0){
-    currentPageIdx--;
-    showPage(currentPageIdx,document.querySelectorAll('.nav-btn')[currentPageIdx]);
-  } else {
-    if(track) track.style.transform=`translateX(-${currentPageIdx*100}%)`;
-  }
-  touchStartX=0;isSwiping=false;swipeLocked=false;
-},{passive:true});
 
 // ═══ EXAM TRACKER ═══
 const EXAM_STORE = 'dr_exams_v2';
@@ -1587,8 +1536,7 @@ function initApp(){
   initJournal();
   // Always start on journal page
   currentPageIdx=0;
-  const track=document.getElementById('pagesTrack');
-  if(track){track.style.transition='none';track.style.transform='translateX(0)';}
+  document.querySelectorAll('.page').forEach((p,i)=>p.classList.toggle('active',i===0));
   document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
   for(let i=0;i<6;i++){const d=document.getElementById('ndot'+i);if(d)d.classList.toggle('active',i===0);}
   setInterval(()=>{checkOverdue();},60000);
