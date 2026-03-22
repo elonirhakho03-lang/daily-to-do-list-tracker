@@ -414,7 +414,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 <body>
 
 <!-- ══ ONBOARDING ══ -->
-<div class="onboard-overlay" id="onboardOverlay">
+<div class="onboard-overlay hidden" id="onboardOverlay">
   <div class="onboard-box">
     <div class="onboard-dots">
       <div class="onboard-dot active" id="dot0"></div>
@@ -704,75 +704,6 @@ e.g. Morning run, Study session, Movie night"></textarea>
 </div>
 
 <!-- PAGE 4: STATS -->
-<div class="page" id="page-exams">
-  <div class="stats-header" style="position:relative;overflow:hidden;">
-    <div style="position:absolute;top:8px;right:16px;font-size:1.6rem;opacity:.22;transform:rotate(10deg);">🎯</div>
-    <div style="position:absolute;top:24px;left:14px;font-size:1.3rem;opacity:.18;transform:rotate(-12deg);">📚</div>
-    <div style="position:absolute;bottom:2px;right:50px;font-size:1.1rem;opacity:.2;transform:rotate(5deg);">✦</div>
-    <h2>exam <em>tracker</em></h2>
-    <p>Stay on top of every important date</p>
-  </div>
-  <div style="max-width:640px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column;gap:14px;">
-    <!-- NOTICE BOARD -->
-    <div id="examNoticeBoard"></div>
-    <!-- PRESET EXAMS -->
-    <div style="background:var(--card);backdrop-filter:blur(12px);border-radius:var(--r);border:1.5px solid rgba(255,255,255,.85);padding:16px 18px;box-shadow:var(--shadow);">
-      <div style="font-family:'Fraunces',serif;font-size:.95rem;font-weight:400;margin-bottom:12px;">📋 Quick add popular exams</div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;" id="presetExams">
-        <button onclick="addPresetExam('UPSC CSE','https://upsc.gov.in','🏛️')" class="preset-exam-btn">🏛️ UPSC CSE</button>
-        <button onclick="addPresetExam('SSC CGL','https://ssc.nic.in','📝')" class="preset-exam-btn">📝 SSC CGL</button>
-        <button onclick="addPresetExam('SSC CHSL','https://ssc.nic.in','📝')" class="preset-exam-btn">📝 SSC CHSL</button>
-        <button onclick="addPresetExam('IBPS PO','https://ibps.in','🏦')" class="preset-exam-btn">🏦 IBPS PO</button>
-        <button onclick="addPresetExam('IBPS Clerk','https://ibps.in','🏦')" class="preset-exam-btn">🏦 IBPS Clerk</button>
-        <button onclick="addPresetExam('SBI PO','https://sbi.co.in','💰')" class="preset-exam-btn">💰 SBI PO</button>
-        <button onclick="addPresetExam('RRB NTPC','https://rrbapply.gov.in','🚂')" class="preset-exam-btn">🚂 RRB NTPC</button>
-        <button onclick="addPresetExam('NEET UG','https://neet.nta.nic.in','🩺')" class="preset-exam-btn">🩺 NEET UG</button>
-        <button onclick="addPresetExam('JEE Main','https://jeemain.nta.nic.in','⚙️')" class="preset-exam-btn">⚙️ JEE Main</button>
-        <button onclick="addPresetExam('JEE Advanced','https://jeeadv.ac.in','⚙️')" class="preset-exam-btn">⚙️ JEE Advanced</button>
-        <button onclick="addPresetExam('CDS','https://upsc.gov.in','🎖️')" class="preset-exam-btn">🎖️ CDS</button>
-        <button onclick="addPresetExam('GATE','https://gate2025.iitr.ac.in','🔬')" class="preset-exam-btn">🔬 GATE</button>
-        <button onclick="addPresetExam('NPSC','https://npsc.nic.in','🏔️')" class="preset-exam-btn">🏔️ NPSC</button>
-      </div>
-    </div>
-    <!-- EXAM LIST -->
-    <div id="examList"></div>
-    <!-- EMPTY STATE -->
-    <div id="examEmptyState" style="text-align:center;padding:20px 16px;">
-      <svg viewBox="0 0 280 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:280px;opacity:.5;">
-        <!-- Book stack -->
-        <rect x="80" y="100" width="120" height="14" rx="4" fill="rgba(169,145,212,.4)"/>
-        <rect x="86" y="86" width="108" height="14" rx="4" fill="rgba(232,165,160,.4)"/>
-        <rect x="92" y="72" width="96" height="14" rx="4" fill="rgba(123,191,181,.4)"/>
-        <rect x="98" y="58" width="84" height="14" rx="4" fill="rgba(232,196,122,.4)"/>
-        <!-- Flowers -->
-        <circle cx="42" cy="75" r="11" fill="rgba(232,165,160,.3)"/>
-        <circle cx="42" cy="58" r="7" fill="rgba(232,165,160,.25)"/>
-        <circle cx="42" cy="92" r="7" fill="rgba(232,165,160,.25)"/>
-        <circle cx="28" cy="75" r="7" fill="rgba(232,165,160,.25)"/>
-        <circle cx="56" cy="75" r="7" fill="rgba(232,165,160,.25)"/>
-        <circle cx="42" cy="75" r="5" fill="rgba(253,240,213,.8)"/>
-        <circle cx="228" cy="65" r="10" fill="rgba(169,145,212,.3)"/>
-        <circle cx="228" cy="50" r="7" fill="rgba(169,145,212,.25)"/>
-        <circle cx="228" cy="80" r="7" fill="rgba(169,145,212,.25)"/>
-        <circle cx="214" cy="65" r="7" fill="rgba(169,145,212,.25)"/>
-        <circle cx="242" cy="65" r="7" fill="rgba(169,145,212,.25)"/>
-        <circle cx="228" cy="65" r="5" fill="rgba(253,240,213,.8)"/>
-        <!-- Stars -->
-        <text x="140" y="40" font-size="16" fill="rgba(232,196,122,.45)" text-anchor="middle">★</text>
-        <text x="165" y="28" font-size="10" fill="rgba(169,145,212,.4)" text-anchor="middle">✦</text>
-        <text x="115" y="30" font-size="12" fill="rgba(232,165,160,.4)" text-anchor="middle">✦</text>
-        <text x="60" y="130" font-size="14" fill="rgba(123,191,181,.4)" text-anchor="middle">✿</text>
-        <text x="210" y="135" font-size="14" fill="rgba(232,165,160,.4)" text-anchor="middle">✿</text>
-      </svg>
-      <p style="font-size:.85rem;color:var(--text-soft);font-style:italic;margin-top:4px;">Tap a preset above or add your own exam! 📚✨</p>
-    </div>
-    <!-- ADD CUSTOM EXAM -->
-    <div style="background:var(--card);backdrop-filter:blur(12px);border-radius:var(--r);border:1.5px solid rgba(255,255,255,.85);padding:16px;box-shadow:var(--shadow);">
-      <button onclick="openExamModal()" style="width:100%;background:linear-gradient(135deg,var(--rose),var(--violet));color:#fff;border:none;border-radius:12px;padding:11px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;">＋ Add Custom Exam</button>
-    </div>
-  </div>
-</div>
-
 <div class="page" id="page-study">
   <div class="stats-header"><h2>study <em>hub</em></h2><p>Your saved tools & favourite sites</p></div>
   <div style="max-width:640px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column;gap:16px;">
@@ -819,7 +750,64 @@ e.g. Morning run, Study session, Movie night"></textarea>
 
 <!-- PAGE 5: EXAMS -->
 
-<!-- PAGE 3: STUDY -->
+<!-- PAGE 3: STUDY --><div class="page" id="page-exams">
+  <div class="stats-header" style="position:relative;overflow:hidden;">
+    <div style="position:absolute;top:8px;right:16px;font-size:1.6rem;opacity:.22;transform:rotate(10deg);">🎯</div>
+    <div style="position:absolute;top:24px;left:14px;font-size:1.3rem;opacity:.18;transform:rotate(-12deg);">📚</div>
+    <h2>exam <em>tracker</em></h2>
+    <p>Stay on top of every important date</p>
+  </div>
+  <div style="max-width:640px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column;gap:14px;">
+    <!-- QUICK ADD PRESETS -->
+    <div style="background:var(--card);backdrop-filter:blur(12px);border-radius:var(--r);border:1.5px solid rgba(255,255,255,.85);padding:16px 18px;box-shadow:var(--shadow);">
+      <div style="font-family:'Fraunces',serif;font-size:.95rem;font-weight:400;margin-bottom:12px;">📋 Quick add an exam</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <button onclick="addExam('UPSC CSE','https://upsc.gov.in','🏛️')" class="preset-exam-btn">🏛️ UPSC CSE</button>
+        <button onclick="addExam('SSC CGL','https://ssc.nic.in','📝')" class="preset-exam-btn">📝 SSC CGL</button>
+        <button onclick="addExam('SSC CHSL','https://ssc.nic.in','📝')" class="preset-exam-btn">📝 SSC CHSL</button>
+        <button onclick="addExam('IBPS PO','https://ibps.in','🏦')" class="preset-exam-btn">🏦 IBPS PO</button>
+        <button onclick="addExam('SBI PO','https://sbi.co.in','💰')" class="preset-exam-btn">💰 SBI PO</button>
+        <button onclick="addExam('RRB NTPC','https://rrbapply.gov.in','🚂')" class="preset-exam-btn">🚂 RRB NTPC</button>
+        <button onclick="addExam('NEET UG','https://neet.nta.nic.in','🩺')" class="preset-exam-btn">🩺 NEET UG</button>
+        <button onclick="addExam('JEE Main','https://jeemain.nta.nic.in','⚙️')" class="preset-exam-btn">⚙️ JEE Main</button>
+        <button onclick="addExam('CDS','https://upsc.gov.in','🎖️')" class="preset-exam-btn">🎖️ CDS</button>
+        <button onclick="addExam('GATE','https://gate2025.iitr.ac.in','🔬')" class="preset-exam-btn">🔬 GATE</button>
+        <button onclick="addExam('NPSC','https://npsc.nic.in','🏔️')" class="preset-exam-btn">🏔️ NPSC</button>
+      </div>
+    </div>
+    <!-- EXAM LIST -->
+    <div id="examListContainer"></div>
+    <!-- ADD CUSTOM -->
+    <div style="background:var(--card);backdrop-filter:blur(12px);border-radius:var(--r);border:1.5px solid rgba(255,255,255,.85);padding:14px 16px;box-shadow:var(--shadow);">
+      <button onclick="addCustomExam()" style="width:100%;background:linear-gradient(135deg,var(--rose),var(--violet));color:#fff;border:none;border-radius:12px;padding:11px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;">＋ Add Custom Exam</button>
+    </div>
+    <!-- DOODLE WHEN EMPTY -->
+    <div id="examEmptyDoodle" style="text-align:center;padding:16px;">
+      <svg viewBox="0 0 280 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:260px;opacity:.5;">
+        <rect x="80" y="95" width="120" height="12" rx="4" fill="rgba(169,145,212,.4)"/>
+        <rect x="86" y="83" width="108" height="12" rx="4" fill="rgba(232,165,160,.4)"/>
+        <rect x="92" y="71" width="96" height="12" rx="4" fill="rgba(123,191,181,.4)"/>
+        <rect x="98" y="59" width="84" height="12" rx="4" fill="rgba(232,196,122,.4)"/>
+        <circle cx="42" cy="72" r="10" fill="rgba(232,165,160,.3)"/>
+        <circle cx="42" cy="57" r="7" fill="rgba(232,165,160,.22)"/>
+        <circle cx="42" cy="87" r="7" fill="rgba(232,165,160,.22)"/>
+        <circle cx="29" cy="72" r="7" fill="rgba(232,165,160,.22)"/>
+        <circle cx="55" cy="72" r="7" fill="rgba(232,165,160,.22)"/>
+        <circle cx="42" cy="72" r="5" fill="rgba(253,240,213,.8)"/>
+        <circle cx="228" cy="62" r="9" fill="rgba(169,145,212,.3)"/>
+        <circle cx="228" cy="48" r="6" fill="rgba(169,145,212,.22)"/>
+        <circle cx="228" cy="76" r="6" fill="rgba(169,145,212,.22)"/>
+        <circle cx="216" cy="62" r="6" fill="rgba(169,145,212,.22)"/>
+        <circle cx="240" cy="62" r="6" fill="rgba(169,145,212,.22)"/>
+        <circle cx="228" cy="62" r="4" fill="rgba(253,240,213,.8)"/>
+        <text x="140" y="38" font-size="14" fill="rgba(232,196,122,.45)" text-anchor="middle">★</text>
+        <text x="60" y="118" font-size="13" fill="rgba(123,191,181,.4)" text-anchor="middle">✿</text>
+        <text x="210" y="122" font-size="13" fill="rgba(232,165,160,.4)" text-anchor="middle">✿</text>
+      </svg>
+      <p style="font-size:.84rem;color:var(--text-soft);font-style:italic;">Tap any exam above to start tracking! 📚✨</p>
+    </div>
+  </div>
+</div>
 </div><!-- end track -->
 </div><!-- end container -->
 
@@ -836,9 +824,9 @@ e.g. Morning run, Study session, Movie night"></textarea>
     <button class="nav-btn active" onclick="showPage(0,this)"><span class="nav-icon">💭</span>Journal</button>
     <button class="nav-btn" onclick="showPage(1,this)"><span class="nav-icon">📅</span>Schedule</button>
     <button class="nav-btn" onclick="showPage(2,this)"><span class="nav-icon">🏃</span>Today</button>
-    <button class="nav-btn" onclick="showPage(3,this)"><span class="nav-icon">🎯</span>Exams</button>
-    <button class="nav-btn" onclick="showPage(4,this)"><span class="nav-icon">📚</span>Study</button>
-    <button class="nav-btn" onclick="showPage(5,this)"><span class="nav-icon">📊</span>Stats</button>
+    <button class="nav-btn" onclick="showPage(3,this)"><span class="nav-icon">📚</span>Study</button>
+    <button class="nav-btn" onclick="showPage(4,this)"><span class="nav-icon">📊</span>Stats</button>
+    <button class="nav-btn" onclick="showPage(5,this)"><span class="nav-icon">🎯</span>Exams</button>
   </div>
 </nav>
 
@@ -888,20 +876,21 @@ function obSelect(el,type){
 function obFinish(){
   const name=document.getElementById('ob-name').value.trim()||'Friend';
   set(K.profile,{name,gender:obGender||'other',goal:obGoal||'general'});
+  // Save permanent flag so onboarding never shows again
+  localStorage.setItem('dr_onboard_done','yes');
   document.getElementById('onboardOverlay').classList.add('hidden');
   initApp();
-  // Always start on Journal page
   showPage(0, document.querySelector('.nav-btn'));
 }
 function checkOnboard(){
-  const p=getProfile();
-  if(!p||!p.name){
-    // First time - show onboarding
-    document.getElementById('onboardOverlay').classList.remove('hidden');
-  } else {
-    // Already set up - go straight to app
+  // Use a simple dedicated key - if it exists, user has completed onboarding
+  const done = localStorage.getItem('dr_onboard_done');
+  if(done === 'yes'){
     document.getElementById('onboardOverlay').classList.add('hidden');
     initApp();
+  } else {
+    // First time ever - show onboarding
+    document.getElementById('onboardOverlay').classList.remove('hidden');
   }
 }
 
@@ -1402,12 +1391,191 @@ function showPage(idx,btn){
   document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
   for(let i=0;i<6;i++){const d=document.getElementById('ndot'+i);if(d)d.classList.toggle('active',i===idx);}
   window.scrollTo({top:0,behavior:'smooth'});
-  // Page order: 0=journal,1=schedule,2=today,3=exams,4=study,5=stats
+  // Page order: 0=journal,1=schedule,2=today,3=study,4=stats,5=exams
   if(idx===0)initJournal();
   if(idx===1)initSchedule();
-  if(idx===3)initExams();
-  if(idx===4){renderTools();const notes=get(K.studyNotes);if(notes)document.getElementById('studyNotes').value=notes;}
-  if(idx===5)initStats();
+  if(idx===3){renderTools();const notes=get(K.studyNotes);if(notes)document.getElementById('studyNotes').value=notes;}
+  if(idx===4)initStats();
+  if(idx===5)initExams();
+}
+
+// ═══ SWIPE (document level - works everywhere) ═══
+document.addEventListener('touchstart',e=>{
+  // Ignore if touching input, textarea, select, button
+  const tag=e.target.tagName.toLowerCase();
+  if(['input','textarea','select','button','a'].includes(tag))return;
+  touchStartX=e.touches[0].clientX;
+  touchStartY=e.touches[0].clientY;
+  isSwiping=false;
+},{passive:true});
+
+document.addEventListener('touchmove',e=>{
+  if(!touchStartX)return;
+  const tag=e.target.tagName.toLowerCase();
+  if(['input','textarea','select'].includes(tag))return;
+  const dx=e.touches[0].clientX-touchStartX;
+  const dy=e.touches[0].clientY-touchStartY;
+  if(!isSwiping&&Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>10){
+    isSwiping=true;
+  }
+  if(isSwiping){
+    e.preventDefault(); // prevent vertical scroll during horizontal swipe
+    const track=document.getElementById('pagesTrack');
+    track.style.transition='none';
+    track.style.transform=`translateX(calc(-${currentPageIdx*100}% + ${dx}px))`;
+  }
+},{passive:false}); // passive:false needed to call preventDefault
+
+document.addEventListener('touchend',e=>{
+  if(!isSwiping){touchStartX=0;return;}
+  const dx=e.changedTouches[0].clientX-touchStartX;
+  const track=document.getElementById('pagesTrack');
+  track.style.transition='transform .35s cubic-bezier(.4,0,.2,1)';
+  if(dx<-50&&currentPageIdx<PAGE_COUNT-1)showPage(currentPageIdx+1);
+  else if(dx>50&&currentPageIdx>0)showPage(currentPageIdx-1);
+  else track.style.transform=`translateX(-${currentPageIdx*100}%)`;
+  touchStartX=0;isSwiping=false;
+},{passive:true});
+
+// ═══ EXAM TRACKER ═══
+const EXAM_STORE = 'dr_exams_v2';
+function getExams(){return get(EXAM_STORE)||[];}
+function saveExams(e){set(EXAM_STORE,e);}
+
+const DATE_LABELS = [
+  {key:'regOpen', label:'📅 Registration Open'},
+  {key:'regClose', label:'⏰ Registration Closes'},
+  {key:'admit', label:'🪪 Admit Card'},
+  {key:'exam', label:'✍️ Exam Date'},
+  {key:'result', label:'📊 Result Date'},
+];
+
+function daysLeft(dateStr){
+  if(!dateStr) return null;
+  const d=new Date(dateStr), now=new Date();
+  now.setHours(0,0,0,0); d.setHours(0,0,0,0);
+  return Math.round((d-now)/86400000);
+}
+
+function countdownTag(dateStr){
+  const days=daysLeft(dateStr);
+  if(days===null) return '';
+  if(days<0) return `<span style="font-size:.68rem;padding:1px 6px;border-radius:8px;background:rgba(200,200,200,.3);color:var(--text-soft);">Passed</span>`;
+  if(days===0) return `<span style="font-size:.68rem;padding:1px 6px;border-radius:8px;background:rgba(240,100,100,.2);color:#c0504a;font-weight:600;">Today!</span>`;
+  if(days<=7) return `<span style="font-size:.68rem;padding:1px 6px;border-radius:8px;background:rgba(240,100,100,.15);color:#c0504a;">${days}d left</span>`;
+  if(days<=30) return `<span style="font-size:.68rem;padding:1px 6px;border-radius:8px;background:rgba(232,196,122,.25);color:#b07800;">${days}d left</span>`;
+  return `<span style="font-size:.68rem;padding:1px 6px;border-radius:8px;background:rgba(123,191,181,.2);color:#4a9090;">${days}d left</span>`;
+}
+
+function addExam(name, url, icon){
+  const exams = getExams();
+  if(exams.find(e=>e.name===name)){
+    // Already exists - flash message
+    event.target.textContent='✓ Already added!';
+    setTimeout(()=>event.target.textContent=icon+' '+name,2000);
+    return;
+  }
+  exams.push({id:uid(), name, url, icon, dates:{regOpen:'',regClose:'',admit:'',exam:'',result:''}, notes:''});
+  saveExams(exams);
+  renderExamList();
+  // Button feedback
+  const btn=event.target;
+  const orig=btn.textContent;
+  btn.textContent='✓ Added!';
+  btn.style.background='linear-gradient(135deg,rgba(123,191,181,.4),rgba(168,216,176,.4))';
+  setTimeout(()=>{btn.textContent=orig;btn.style.background='';},2000);
+}
+
+function addCustomExam(){
+  const name=prompt('Exam name (e.g. MPSC, State PSC, Bank exam):');
+  if(!name||!name.trim()) return;
+  const url=prompt('Official website (optional — press Cancel to skip):');
+  const exams=getExams();
+  exams.push({id:uid(), name:name.trim(), url:(url&&url.startsWith('http'))?url:'', icon:'📋', dates:{regOpen:'',regClose:'',admit:'',exam:'',result:''}, notes:''});
+  saveExams(exams);
+  renderExamList();
+}
+
+function deleteExamItem(id){
+  if(!confirm('Remove this exam from your tracker?')) return;
+  saveExams(getExams().filter(e=>e.id!==id));
+  renderExamList();
+}
+
+function saveExamField(id, field, val){
+  const exams=getExams();
+  const e=exams.find(e=>e.id===id);
+  if(!e) return;
+  if(field==='notes') e.notes=val;
+  else e.dates[field]=val;
+  saveExams(exams);
+  // Update countdown tags inline
+  renderExamList();
+}
+
+function renderExamList(){
+  const exams=getExams();
+  const container=document.getElementById('examListContainer');
+  const doodle=document.getElementById('examEmptyDoodle');
+  if(!container) return;
+  if(!exams.length){
+    container.innerHTML='';
+    if(doodle) doodle.style.display='block';
+    return;
+  }
+  if(doodle) doodle.style.display='none';
+  container.innerHTML=exams.map(exam=>`
+    <div style="background:var(--card);backdrop-filter:blur(12px);border-radius:var(--r);border:1.5px solid rgba(255,255,255,.85);padding:0;box-shadow:var(--shadow);overflow:hidden;">
+      <!-- Header -->
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.5);">
+        <span style="font-size:1.4rem;">${exam.icon||'📋'}</span>
+        <div style="flex:1;">
+          <div style="font-family:'Fraunces',serif;font-size:1rem;font-weight:400;">${escH(exam.name)}</div>
+          ${exam.url?`<a href="${exam.url}" target="_blank" rel="noopener" style="font-size:.72rem;color:var(--violet);text-decoration:none;">🔗 Official website</a>`:''}
+        </div>
+        <button onclick="deleteExamItem('${exam.id}')" style="background:none;border:none;color:var(--rose);font-size:.85rem;cursor:pointer;opacity:.5;padding:4px 6px;">✕</button>
+      </div>
+      <!-- Date fields -->
+      <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px;">
+        ${DATE_LABELS.map(dl=>`
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:.75rem;color:var(--text-soft);width:140px;flex-shrink:0;">${dl.label}</span>
+            <input type="date" value="${exam.dates[dl.key]||''}"
+              onchange="saveExamField('${exam.id}','${dl.key}',this.value)"
+              style="flex:1;background:rgba(255,255,255,.6);border:1.5px solid rgba(200,180,180,.3);border-radius:9px;padding:6px 10px;font-size:.82rem;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;"/>
+            ${countdownTag(exam.dates[dl.key])}
+          </div>
+        `).join('')}
+        <textarea placeholder="Notes about this exam... (syllabus, tips, links)"
+          onchange="saveExamField('${exam.id}','notes',this.value)"
+          style="width:100%;margin-top:6px;background:rgba(255,255,255,.55);border:1.5px solid rgba(255,255,255,.8);border-radius:11px;padding:10px 12px;font-size:.84rem;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;resize:vertical;min-height:70px;line-height:1.6;">${escH(exam.notes||'')}</textarea>
+      </div>
+    </div>
+  `).join('');
+}
+
+function initExams(){
+  renderExamList();
+}
+
+// ═══ SWIPE NAV ═══
+const PAGE_COUNT=6;
+let touchStartX=0,touchStartY=0,isSwiping=false;
+
+function showPage(idx,btn){
+  currentPageIdx=idx;
+  const track=document.getElementById('pagesTrack');
+  track.style.transition='transform .35s cubic-bezier(.4,0,.2,1)';
+  track.style.transform=`translateX(-${idx*100}%)`;
+  document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+  for(let i=0;i<6;i++){const d=document.getElementById('ndot'+i);if(d)d.classList.toggle('active',i===idx);}
+  window.scrollTo({top:0,behavior:'smooth'});
+  // Page order: 0=journal,1=schedule,2=today,3=study,4=stats,5=exams
+  if(idx===0)initJournal();
+  if(idx===1)initSchedule();
+  if(idx===3){renderTools();const notes=get(K.studyNotes);if(notes)document.getElementById('studyNotes').value=notes;}
+  if(idx===4)initStats();
+  if(idx===5)initExams();
 }
 
 // ═══ SWIPE (document level - works everywhere) ═══
