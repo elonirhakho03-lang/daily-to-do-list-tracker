@@ -1513,5 +1513,82 @@ function initApp(){
 }
 checkOnboard();
 </script>
+
+<script>
+// SAFE SWIPE (no conflicts)
+let startX=0,endX=0;
+let pagesList=[];
+let currentIndex=0;
+
+window.addEventListener("load",()=>{
+  pagesList = Array.from(document.querySelectorAll(".page"));
+  currentIndex = pagesList.findIndex(p=>p.classList.contains("active"));
+
+  const user = localStorage.getItem("username");
+  if(!user){
+    document.getElementById("onboardOverlay").classList.remove("hidden");
+  } else {
+    document.getElementById("onboardOverlay").classList.add("hidden");
+    updateGreeting(user);
+  }
+});
+
+document.addEventListener("touchstart",e=>{
+  startX=e.touches[0].clientX;
+});
+
+document.addEventListener("touchend",e=>{
+  endX=e.changedTouches[0].clientX;
+  let diff=startX-endX;
+  if(Math.abs(diff)<50) return;
+
+  if(diff>0) goPage(currentIndex+1);
+  else goPage(currentIndex-1);
+});
+
+function goPage(i){
+  if(i<0||i>=pagesList.length) return;
+  pagesList.forEach(p=>p.classList.remove("active"));
+  pagesList[i].classList.add("active");
+  currentIndex=i;
+}
+
+// greeting ONLY (no override)
+function updateGreeting(name){
+  const greet="hi "+name+" ✨";
+  let t=document.getElementById("todayGreeting");
+  let j=document.getElementById("journalGreeting");
+  if(t) t.innerText=greet;
+  if(j) j.innerText=greet;
+}
+
+// hook into existing onboarding finish
+document.addEventListener("click",e=>{
+  if(e.target && e.target.innerText && e.target.innerText.includes("Start my journey")){
+    setTimeout(()=>{
+      let name=localStorage.getItem("username");
+      if(name) updateGreeting(name);
+    },200);
+  }
+});
+
+// edit name
+function changeName(){
+  let n=prompt("Enter your new name:");
+  if(!n) return;
+  localStorage.setItem("username",n);
+  updateGreeting(n);
+}
+</script>
+
+<button onclick="changeName()" style="
+position:fixed;top:10px;right:14px;z-index:1000;
+background:rgba(255,255,255,0.6);
+border:1px solid rgba(200,180,180,.4);
+padding:6px 10px;border-radius:10px;
+font-size:0.75rem;cursor:pointer;">
+⚙️ Edit Name
+</button>
+
 </body>
 </html>
