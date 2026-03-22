@@ -12,6 +12,7 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-SH4QMHJ5DK');</script>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+
 :root{--rose:#e8a5a0;--violet:#a991d4;--sage:#7bbfb5;--gold:#e8c07a;--text:#3d2f2f;--text-soft:#8a7070;--card:rgba(255,255,255,0.72);--card-solid:rgba(255,250,249,0.97);--shadow:0 8px 32px rgba(180,140,130,0.13);--r:20px;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;background:linear-gradient(135deg,#fde8e4 0%,#e8dff5 45%,#d4eee9 100%);min-height:100vh;color:var(--text);padding-bottom:100px;overflow-x:hidden;}
@@ -411,11 +412,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 /* ══ TOOLTIP ══ */
 .tip{position:fixed;z-index:999;background:var(--card-solid);border:1.5px solid rgba(255,255,255,.9);border-radius:11px;padding:7px 12px;font-size:.78rem;box-shadow:0 8px 24px rgba(180,140,130,.2);pointer-events:none;opacity:0;transition:opacity .2s;backdrop-filter:blur(12px);}
 .tip.show{opacity:1;}
+
 </style>
 </head>
 <body>
 
-<!-- ══ ONBOARDING ══ -->
+<!-- ONBOARDING -->
 <div class="onboard-overlay hidden" id="onboardOverlay">
   <div class="onboard-box">
     <div class="onboard-dots">
@@ -423,51 +425,34 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
       <div class="onboard-dot" id="dot1"></div>
       <div class="onboard-dot" id="dot2"></div>
     </div>
-    <!-- Step 1: Welcome -->
     <div class="onboard-step active" id="ob-step-0">
       <div class="onboard-emoji">🏃</div>
       <h2 class="onboard-title">welcome to<br><em>daily run</em></h2>
-      <p class="onboard-sub">Your personal routine tracker. Let's set things up for you!</p>
-      <p class="onboard-sub" style="margin-bottom:16px;">What's your name?</p>
+      <p class="onboard-sub">Your personal routine tracker. Let's set things up!</p>
+      <p class="onboard-sub">What's your name?</p>
       <input class="onboard-input" id="ob-name" placeholder="e.g. Nausicaa" maxlength="20"/>
       <button class="onboard-next" onclick="obNext(1)">Let's go! 🌸</button>
     </div>
-    <!-- Step 2: Gender -->
     <div class="onboard-step" id="ob-step-1">
       <div class="onboard-emoji">✨</div>
       <h2 class="onboard-title">hi <em id="ob-name-display">there</em>!</h2>
       <p class="onboard-sub">Help us personalise your experience</p>
       <div class="onboard-options">
-        <div class="onboard-option" data-val="female" onclick="obSelect(this,'gender')">
-          <span class="onboard-option-icon">🌸</span><span>Female</span>
-        </div>
-        <div class="onboard-option" data-val="male" onclick="obSelect(this,'gender')">
-          <span class="onboard-option-icon">💙</span><span>Male</span>
-        </div>
-        <div class="onboard-option" data-val="other" onclick="obSelect(this,'gender')">
-          <span class="onboard-option-icon">🌈</span><span>Prefer not to say</span>
-        </div>
+        <div class="onboard-option" data-val="female" onclick="obSelect(this,'gender')"><span class="onboard-option-icon">🌸</span><span>Female</span></div>
+        <div class="onboard-option" data-val="male" onclick="obSelect(this,'gender')"><span class="onboard-option-icon">💙</span><span>Male</span></div>
+        <div class="onboard-option" data-val="other" onclick="obSelect(this,'gender')"><span class="onboard-option-icon">🌈</span><span>Prefer not to say</span></div>
       </div>
       <button class="onboard-next" onclick="obNext(2)">Next →</button>
     </div>
-    <!-- Step 3: Goal -->
     <div class="onboard-step" id="ob-step-2">
       <div class="onboard-emoji">🎯</div>
       <h2 class="onboard-title">your main <em>goal</em></h2>
       <p class="onboard-sub">What are you mostly using this app for?</p>
       <div class="onboard-options">
-        <div class="onboard-option" data-val="health" onclick="obSelect(this,'goal')">
-          <span class="onboard-option-icon">💪</span><span>Health & Fitness</span>
-        </div>
-        <div class="onboard-option" data-val="study" onclick="obSelect(this,'goal')">
-          <span class="onboard-option-icon">📚</span><span>Study & Learning</span>
-        </div>
-        <div class="onboard-option" data-val="work" onclick="obSelect(this,'goal')">
-          <span class="onboard-option-icon">💼</span><span>Work & Productivity</span>
-        </div>
-        <div class="onboard-option" data-val="general" onclick="obSelect(this,'goal')">
-          <span class="onboard-option-icon">🌸</span><span>General Routine</span>
-        </div>
+        <div class="onboard-option" data-val="health" onclick="obSelect(this,'goal')"><span class="onboard-option-icon">💪</span><span>Health & Fitness</span></div>
+        <div class="onboard-option" data-val="study" onclick="obSelect(this,'goal')"><span class="onboard-option-icon">📚</span><span>Study & Learning</span></div>
+        <div class="onboard-option" data-val="work" onclick="obSelect(this,'goal')"><span class="onboard-option-icon">💼</span><span>Work & Productivity</span></div>
+        <div class="onboard-option" data-val="general" onclick="obSelect(this,'goal')"><span class="onboard-option-icon">🌸</span><span>General Routine</span></div>
       </div>
       <button class="onboard-next" onclick="obFinish()">Start my journey! 🚀</button>
     </div>
@@ -527,34 +512,18 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
   </div>
 </div>
 
-<!-- EXAM MODAL -->
-<div class="modal-overlay" id="examModal">
-  <div class="modal">
-    <h3>🎯 Add Exam</h3>
-    <span class="modal-label">Exam name</span>
-    <input class="modal-input" id="examName" placeholder="e.g. SSC CGL 2025"/>
-    <span class="modal-label">Official website URL (optional)</span>
-    <input class="modal-input" id="examUrl" placeholder="e.g. https://ssc.nic.in"/>
-    <span class="modal-label">Emoji icon</span>
-    <input class="modal-input" id="examIcon" placeholder="🎯" maxlength="4"/>
-    <div class="modal-btns">
-      <button class="modal-btn cancel" id="cancelExamBtn">Cancel</button>
-      <button class="modal-btn save" id="saveExamBtn">Add ✓</button>
-    </div>
-  </div>
-</div>
 <div class="tip" id="tip"></div>
 
-<!-- ══ SWIPEABLE PAGES ══ -->
+<div class="pages-container" id="pagesContainer">
+<div class="pages-track" id="pagesTrack">
 
 <!-- PAGE 0: JOURNAL -->
-<div class="page active" id="page-journal">
+<div class="page" id="page-journal" style="display:block;">
   <div class="stats-header">
     <h2>your <em>journal</em></h2>
     <div class="greeting" id="journalGreeting"></div>
   </div>
   <div class="stat-cards" style="max-width:640px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column;gap:16px;">
-    <!-- MOOD -->
     <div class="mood-card">
       <h3>😊 How are you feeling today?</h3>
       <div class="mood-options">
@@ -566,15 +535,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
       </div>
       <div class="mood-saved" id="moodSaved">✓ Mood saved!</div>
     </div>
-    <!-- PERIOD (female) / SLEEP (male) -->
     <div id="healthTrackerSection"></div>
-    <!-- QUOTE -->
     <div class="journal-quote">
       <div class="quote-text" id="quoteText">Loading your daily quote...</div>
       <div class="quote-author" id="quoteAuthor"></div>
       <button class="quote-refresh" onclick="newQuote()">🔄 New quote</button>
     </div>
-    <!-- THOUGHTS -->
     <div class="journal-entry-card">
       <h3>✍️ Today's thoughts</h3>
       <div class="j-date" id="journalDate"></div>
@@ -582,7 +548,6 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
       <button class="journal-save-btn" onclick="saveJournal()">Save thoughts 💭</button>
       <div class="journal-saved-msg" id="journalSavedMsg">✓ Saved!</div>
     </div>
-    <!-- PAST ENTRIES -->
     <div class="journal-prev">
       <h3>📖 Past entries</h3>
       <div id="journalHistory"></div>
@@ -590,13 +555,11 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
   </div>
 </div>
 
-<!-- PAGE 2: SCHEDULE -->
+<!-- PAGE 1: SCHEDULE -->
 <div class="page" id="page-schedule">
   <div class="stats-header" style="position:relative;overflow:hidden;">
-    <!-- Floating doodles -->
     <div style="position:absolute;top:10px;left:16px;font-size:1.8rem;opacity:.25;transform:rotate(-15deg);">🌸</div>
     <div style="position:absolute;top:20px;right:20px;font-size:1.4rem;opacity:.2;transform:rotate(12deg);">✿</div>
-    <div style="position:absolute;bottom:0px;left:40px;font-size:1.2rem;opacity:.18;transform:rotate(8deg);">🌼</div>
     <h2>your <em>week</em></h2>
     <p>Custom plan for each day</p>
   </div>
@@ -604,53 +567,18 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
   <div style="max-width:640px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column;gap:14px;">
     <div class="sched-card">
       <div class="sched-day-header"><div><div class="sched-day-title" id="schedDayTitle">Monday</div><div class="sched-day-label" id="schedDayLabel"></div></div></div>
-      <textarea class="sched-day-note" id="schedDayNote" placeholder="Write your plan for this day... 🌸
-
-e.g. Morning run, Study session, Movie night"></textarea>
+      <textarea class="sched-day-note" id="schedDayNote" placeholder="Note for this day... 🌸"></textarea>
       <ul class="sched-items" id="schedItems"></ul>
       <div class="sched-add-row"><button style="background:linear-gradient(135deg,var(--rose),var(--violet));color:#fff;border:none;border-radius:10px;padding:8px 18px;font-family:'DM Sans',sans-serif;font-size:.84rem;font-weight:500;cursor:pointer;" onclick="openSchedModal()">＋ Add item</button></div>
     </div>
-    <!-- Empty state doodle -->
-    <div id="schedEmptyState" style="text-align:center;padding:24px 20px;">
-      <svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:280px;opacity:.55;">
-        <!-- Flowers -->
-        <circle cx="40" cy="60" r="14" fill="rgba(232,165,160,.35)"/>
-        <circle cx="40" cy="40" r="9" fill="rgba(232,165,160,.3)"/>
-        <circle cx="40" cy="80" r="9" fill="rgba(232,165,160,.3)"/>
-        <circle cx="24" cy="60" r="9" fill="rgba(232,165,160,.3)"/>
-        <circle cx="56" cy="60" r="9" fill="rgba(232,165,160,.3)"/>
-        <circle cx="40" cy="60" r="7" fill="rgba(253,240,213,.7)"/>
-        <line x1="40" y1="94" x2="40" y2="130" stroke="rgba(123,191,181,.5)" stroke-width="2.5" stroke-linecap="round"/>
-        <ellipse cx="32" cy="112" rx="10" ry="6" fill="rgba(168,216,176,.4)" transform="rotate(-20,32,112)"/>
-        <ellipse cx="50" cy="118" rx="10" ry="6" fill="rgba(168,216,176,.4)" transform="rotate(20,50,118)"/>
-        <!-- Second flower -->
-        <circle cx="220" cy="50" r="12" fill="rgba(169,145,212,.3)"/>
-        <circle cx="220" cy="33" r="8" fill="rgba(169,145,212,.25)"/>
-        <circle cx="220" cy="67" r="8" fill="rgba(169,145,212,.25)"/>
-        <circle cx="206" cy="50" r="8" fill="rgba(169,145,212,.25)"/>
-        <circle cx="234" cy="50" r="8" fill="rgba(169,145,212,.25)"/>
-        <circle cx="220" cy="50" r="6" fill="rgba(253,240,213,.7)"/>
-        <line x1="220" y1="62" x2="220" y2="130" stroke="rgba(123,191,181,.5)" stroke-width="2.5" stroke-linecap="round"/>
-        <ellipse cx="212" cy="100" rx="10" ry="6" fill="rgba(168,216,176,.4)" transform="rotate(-15,212,100)"/>
-        <!-- Small stars/sparkles -->
-        <text x="110" y="55" font-size="18" fill="rgba(232,196,122,.5)" text-anchor="middle">✦</text>
-        <text x="155" y="35" font-size="12" fill="rgba(169,145,212,.4)" text-anchor="middle">✦</text>
-        <text x="80" y="140" font-size="14" fill="rgba(232,165,160,.4)" text-anchor="middle">✿</text>
-        <text x="190" y="145" font-size="16" fill="rgba(123,191,181,.4)" text-anchor="middle">✿</text>
-        <!-- Dotted lines like a notebook -->
-        <line x1="70" y1="80" x2="210" y2="80" stroke="rgba(180,160,160,.2)" stroke-width="1.5" stroke-dasharray="4,4"/>
-        <line x1="70" y1="100" x2="210" y2="100" stroke="rgba(180,160,160,.2)" stroke-width="1.5" stroke-dasharray="4,4"/>
-        <line x1="70" y1="120" x2="210" y2="120" stroke="rgba(180,160,160,.2)" stroke-width="1.5" stroke-dasharray="4,4"/>
-        <!-- Pencil -->
-        <rect x="128" y="60" width="8" height="30" rx="2" fill="rgba(232,196,122,.45)" transform="rotate(30,132,75)"/>
-        <polygon points="132,90 128,100 136,100" fill="rgba(200,160,100,.35)" transform="rotate(30,132,95)"/>
-      </svg>
-      <p style="font-size:.85rem;color:var(--text-soft);font-style:italic;margin-top:4px;">Add your first item for this day! 🌸</p>
+    <div id="schedEmptyState" style="text-align:center;padding:20px;display:none;">
+      <div style="font-size:2.5rem;margin-bottom:8px;">🌸</div>
+      <p style="font-size:.85rem;color:var(--text-soft);font-style:italic;">Add your first item for this day!</p>
     </div>
   </div>
 </div>
 
-<!-- PAGE 1: TODAY -->
+<!-- PAGE 2: TODAY -->
 <div class="page" id="page-today">
   <header class="page-header">
     <h1>your <em>daily run</em> ✦</h1>
@@ -698,14 +626,14 @@ e.g. Morning run, Study session, Movie night"></textarea>
       <ul class="task-list" id="list-evening"></ul>
       <div class="add-row"><input class="add-input" id="input-evening" placeholder="Add evening task…"/><button class="add-btn" onclick="addTask('evening')">＋</button></div>
     </div>
-    <div class="done-banner" id="doneBanner"><div style="font-size:1.6rem">🎉✨🌸</div><h2>You finished your day!</h2><p style="font-size:.85rem;color:var(--text-soft);margin-top:4px;">Every task done. You ran the whole day! 🏅</p></div>
+    <div class="done-banner" id="doneBanner"><div style="font-size:1.6rem">🎉✨🌸</div><h2>You finished your day!</h2><p style="font-size:.85rem;color:var(--text-soft);margin-top:4px;">Every task done! 🏅</p></div>
     <div class="reset-wrap"><button class="reset-btn" onclick="resetDay()">↺ Reset today's progress</button></div>
   </div>
 </div>
 
-<!-- PAGE 4: STATS -->
+<!-- PAGE 3: STUDY -->
 <div class="page" id="page-study">
-  <div class="stats-header"><h2>study <em>hub</em></h2><p>Your saved tools & favourite sites</p></div>
+  <div class="stats-header"><h2>study <em>hub</em></h2><p>Your saved tools &amp; favourite sites</p></div>
   <div style="max-width:640px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column;gap:16px;">
     <div class="study-tools" id="studyTools"></div>
     <div style="background:var(--card);backdrop-filter:blur(12px);border-radius:var(--r);border:1.5px solid rgba(255,255,255,.85);padding:18px;box-shadow:var(--shadow);">
@@ -717,11 +645,11 @@ e.g. Morning run, Study session, Movie night"></textarea>
   </div>
 </div>
 
+<!-- PAGE 4: STATS -->
 <div class="page" id="page-stats">
-  <div class="stats-header"><h2>your <em>stats</em></h2><p>History, streaks & progress</p></div>
+  <div class="stats-header"><h2>your <em>stats</em></h2><p>History, streaks &amp; progress</p></div>
   <div style="max-width:640px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column;gap:16px;">
     <div class="streak-row" id="statsStreak"></div>
-    <!-- HISTORY -->
     <div class="card" style="padding:18px;backdrop-filter:blur(12px)">
       <div class="hist-nav">
         <button class="hist-arrow" id="histPrev">‹ Earlier</button>
@@ -731,59 +659,29 @@ e.g. Morning run, Study session, Movie night"></textarea>
       <div id="histSummary" class="hist-summary"></div>
       <div id="histContent"></div>
     </div>
-    <!-- WEEK BARS -->
     <div class="week-chart card"><h3>This week</h3><div class="bars" id="weekBars"></div></div>
-
-    <!-- HEALTH CAL -->
+    <div class="stat-cal card">
+      <div class="cal-nav">
+        <button class="cal-arrow" id="calPrev">‹</button>
+        <h3 id="calTitle"></h3>
+        <button class="cal-arrow" id="calNext">›</button>
+      </div>
+      <div class="scal-grid" id="statCalGrid"></div>
+    </div>
     <div class="health-cal" id="healthCalSection">
       <div class="cal-nav">
         <button class="cal-arrow" id="hcalPrev">‹</button>
-        <h3 id="hcalTitle">Mood & Health</h3>
+        <h3 id="hcalTitle">Mood &amp; Health</h3>
         <button class="cal-arrow" id="hcalNext">›</button>
       </div>
       <div class="cal-grid" id="healthCalGrid"></div>
       <div class="cal-legend-row" id="healthCalLegend"></div>
     </div>
-    <div style="height:8px;"></div>
   </div>
 </div>
 
-<!-- PAGE 5: EXAMS -->
-
-<!-- PAGE 3: STUDY --><div class="page" id="page-exams">
-  <div class="stats-header" style="position:relative;overflow:hidden;">
-    <div style="position:absolute;top:8px;right:16px;font-size:1.6rem;opacity:.2;transform:rotate(10deg);">🎯</div>
-    <h2>exam <em>tracker</em></h2>
-    <p>Your exams, dates &amp; official sites</p>
-  </div>
-  <div style="max-width:640px;margin:0 auto;padding:0 16px;display:flex;flex-direction:column;gap:14px;">
-    <div style="background:var(--card);backdrop-filter:blur(12px);border-radius:var(--r);border:1.5px solid rgba(255,255,255,.85);padding:16px 18px;box-shadow:var(--shadow);">
-      <div style="font-family:Fraunces,serif;font-size:.95rem;font-weight:400;margin-bottom:12px;">📋 Quick add popular exams</div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;">
-        <button class="preset-exam-btn" onclick="addExam('UPSC CSE','https://upsc.gov.in','🏛️')">🏛️ UPSC</button>
-        <button class="preset-exam-btn" onclick="addExam('SSC CGL','https://ssc.nic.in','📝')">📝 SSC CGL</button>
-        <button class="preset-exam-btn" onclick="addExam('SSC CHSL','https://ssc.nic.in','📝')">📝 SSC CHSL</button>
-        <button class="preset-exam-btn" onclick="addExam('IBPS PO','https://ibps.in','🏦')">🏦 IBPS PO</button>
-        <button class="preset-exam-btn" onclick="addExam('SBI PO','https://sbi.co.in','💰')">💰 SBI PO</button>
-        <button class="preset-exam-btn" onclick="addExam('RRB NTPC','https://rrbapply.gov.in','🚂')">🚂 RRB NTPC</button>
-        <button class="preset-exam-btn" onclick="addExam('NEET UG','https://neet.nta.nic.in','🩺')">🩺 NEET</button>
-        <button class="preset-exam-btn" onclick="addExam('JEE Main','https://jeemain.nta.nic.in','⚙️')">⚙️ JEE</button>
-        <button class="preset-exam-btn" onclick="addExam('CDS','https://upsc.gov.in','🎖️')">🎖️ CDS</button>
-        <button class="preset-exam-btn" onclick="addExam('GATE','https://gate2025.iitr.ac.in','🔬')">🔬 GATE</button>
-        <button class="preset-exam-btn" onclick="addExam('NPSC','https://npsc.nic.in','🏔️')">🏔️ NPSC</button>
-      </div>
-    </div>
-    <div id="examCards"></div>
-    <div id="examEmpty" style="text-align:center;padding:20px;">
-      <div style="font-size:3rem;margin-bottom:8px;">📚</div>
-      <p style="font-size:.88rem;color:var(--text-soft);font-style:italic;">Tap an exam above to start tracking!</p>
-    </div>
-    <div style="background:var(--card);backdrop-filter:blur(12px);border-radius:var(--r);border:1.5px solid rgba(255,255,255,.85);padding:14px;box-shadow:var(--shadow);">
-      <button onclick="addCustomExam()" style="width:100%;background:linear-gradient(135deg,var(--rose),var(--violet));color:#fff;border:none;border-radius:12px;padding:11px;font-family:DM Sans,sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;">＋ Add Custom Exam</button>
-    </div>
-  </div>
 </div>
-
+</div>
 
 <nav class="bottom-nav">
   <div class="nav-indicator-row">
@@ -792,7 +690,6 @@ e.g. Morning run, Study session, Movie night"></textarea>
     <div class="nav-dot" id="ndot2"></div>
     <div class="nav-dot" id="ndot3"></div>
     <div class="nav-dot" id="ndot4"></div>
-    <div class="nav-dot" id="ndot5"></div>
   </div>
   <div class="nav-buttons-row">
     <button class="nav-btn active" onclick="showPage(0)"><span class="nav-icon">💭</span>Journal</button>
@@ -800,7 +697,6 @@ e.g. Morning run, Study session, Movie night"></textarea>
     <button class="nav-btn" onclick="showPage(2)"><span class="nav-icon">🏃</span>Today</button>
     <button class="nav-btn" onclick="showPage(3)"><span class="nav-icon">📚</span>Study</button>
     <button class="nav-btn" onclick="showPage(4)"><span class="nav-icon">📊</span>Stats</button>
-    <button class="nav-btn" onclick="showPage(5)"><span class="nav-icon">🎯</span>Exams</button>
   </div>
 </nav>
 
@@ -1363,138 +1259,13 @@ function showPage(idx){
   for(var i=0;i<pages.length;i++){pages[i].style.display=(i===idx)?'block':'none';}
   var btns=document.querySelectorAll('.nav-btn');
   for(var i=0;i<btns.length;i++){btns[i].classList.toggle('active',i===idx);}
-  for(var i=0;i<6;i++){var d=document.getElementById('ndot'+i);if(d)d.classList.toggle('active',i===idx);}
+  for(var i=0;i<5;i++){var d=document.getElementById('ndot'+i);if(d)d.classList.toggle('active',i===idx);}
   window.scrollTo(0,0);
   if(idx===0)initJournal();
   if(idx===1)initSchedule();
   if(idx===3){renderTools();var n=get(K.studyNotes);if(n)document.getElementById('studyNotes').value=n;}
   if(idx===4)initStats();
-  if(idx===5)initExams();
 }
-
-// ═══ EXAM TRACKER ═══
-var EXAM_STORE='dr_exams_v3';
-function getExams(){return get(EXAM_STORE)||[];}
-function saveExams(e){set(EXAM_STORE,e);}
-
-var EXAM_DATES=[
-  {key:'regOpen',label:'📅 Reg. Open'},
-  {key:'regClose',label:'⏰ Reg. Closes'},
-  {key:'admit',label:'🪪 Admit Card'},
-  {key:'examDate',label:'✍️ Exam Date'},
-  {key:'result',label:'📊 Result'},
-];
-
-function examCd(ds){
-  if(!ds)return'';
-  var d=new Date(ds),n=new Date();
-  n.setHours(0,0,0,0);d.setHours(0,0,0,0);
-  var diff=Math.round((d-n)/86400000);
-  if(diff<0)return'<span style="font-size:.65rem;background:rgba(200,200,200,.3);color:var(--text-soft);padding:1px 6px;border-radius:7px;margin-left:4px;">Passed</span>';
-  if(diff===0)return'<span style="font-size:.65rem;background:rgba(240,100,100,.2);color:#c0504a;padding:1px 6px;border-radius:7px;margin-left:4px;font-weight:600;">Today!</span>';
-  if(diff<=7)return'<span style="font-size:.65rem;background:rgba(240,100,100,.1);color:#c0504a;padding:1px 6px;border-radius:7px;margin-left:4px;">'+diff+'d</span>';
-  if(diff<=30)return'<span style="font-size:.65rem;background:rgba(232,196,122,.22);color:#b07800;padding:1px 6px;border-radius:7px;margin-left:4px;">'+diff+'d</span>';
-  return'<span style="font-size:.65rem;background:rgba(123,191,181,.18);color:#4a9090;padding:1px 6px;border-radius:7px;margin-left:4px;">'+diff+'d</span>';
-}
-
-function addExam(name,url,icon){
-  var exams=getExams();
-  for(var i=0;i<exams.length;i++){
-    if(exams[i].name===name){
-      var b=event.target;var o=b.textContent;
-      b.textContent='Already added!';
-      setTimeout(function(){b.textContent=o;},1500);
-      return;
-    }
-  }
-  exams.push({id:uid(),name:name,url:url,icon:icon,dates:{regOpen:'',regClose:'',admit:'',examDate:'',result:''},notes:''});
-  saveExams(exams);
-  var b=event.target;var o=b.textContent;
-  b.textContent='✓ Added!';
-  b.style.background='linear-gradient(135deg,rgba(123,191,181,.4),rgba(168,216,176,.4))';
-  setTimeout(function(){b.textContent=o;b.style.background='';},2000);
-  renderExams();
-}
-
-function addCustomExam(){
-  var name=prompt('Exam name:');
-  if(!name||!name.trim())return;
-  var url=prompt('Official website URL (optional):');
-  var exams=getExams();
-  exams.push({id:uid(),name:name.trim(),url:(url&&url.indexOf('http')===0)?url:'',icon:'📋',dates:{regOpen:'',regClose:'',admit:'',examDate:'',result:''},notes:''});
-  saveExams(exams);
-  renderExams();
-}
-
-function removeExam(id){
-  if(!confirm('Remove this exam?'))return;
-  var exams=getExams().filter(function(e){return e.id!==id;});
-  saveExams(exams);
-  renderExams();
-}
-
-function updateED(id,field,val){
-  var exams=getExams();
-  for(var i=0;i<exams.length;i++){
-    if(exams[i].id===id){exams[i].dates[field]=val;break;}
-  }
-  saveExams(exams);
-  renderExams();
-}
-
-function updateEN(id,val){
-  var exams=getExams();
-  for(var i=0;i<exams.length;i++){
-    if(exams[i].id===id){exams[i].notes=val;break;}
-  }
-  saveExams(exams);
-}
-
-function renderExams(){
-  var exams=getExams();
-  var cards=document.getElementById('examCards');
-  var empty=document.getElementById('examEmpty');
-  if(!cards)return;
-  if(!exams.length){
-    cards.innerHTML='';
-    if(empty)empty.style.display='block';
-    return;
-  }
-  if(empty)empty.style.display='none';
-  var html='';
-  for(var i=0;i<exams.length;i++){
-    var ex=exams[i];
-    var rows='';
-    for(var j=0;j<EXAM_DATES.length;j++){
-      var f=EXAM_DATES[j];
-      rows+='<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.3);">'+
-        '<span style="font-size:.74rem;color:var(--text-soft);min-width:100px;">'+f.label+'</span>'+
-        '<input type="date" value="'+(ex.dates[f.key]||'')+'" '+
-        'onchange="updateED(''+ex.id+'',''+f.key+'',this.value)" '+
-        'style="flex:1;background:rgba(255,255,255,.6);border:1.5px solid rgba(200,180,180,.3);border-radius:9px;padding:5px 8px;font-size:.8rem;font-family:DM Sans,sans-serif;outline:none;"/>'+
-        examCd(ex.dates[f.key])+
-      '</div>';
-    }
-    html+='<div style="background:var(--card);backdrop-filter:blur(12px);border-radius:var(--r);border:1.5px solid rgba(255,255,255,.85);overflow:hidden;box-shadow:var(--shadow);">'+
-      '<div style="display:flex;align-items:center;gap:12px;padding:13px 15px;border-bottom:1px solid rgba(255,255,255,.5);">'+
-        '<span style="font-size:1.4rem;">'+ex.icon+'</span>'+
-        '<div style="flex:1;">'+
-          '<div style="font-family:Fraunces,serif;font-size:.98rem;font-weight:400;">'+escH(ex.name)+'</div>'+
-          (ex.url?'<a href="'+ex.url+'" target="_blank" rel="noopener" style="font-size:.72rem;color:var(--violet);text-decoration:none;">🔗 Official site ↗</a>':'')+
-        '</div>'+
-        '<button onclick="removeExam(''+ex.id+'')" style="background:none;border:none;color:var(--rose);font-size:.88rem;cursor:pointer;opacity:.5;padding:4px 8px;line-height:1;">✕</button>'+
-      '</div>'+
-      '<div style="padding:10px 15px;">'+rows+
-        '<textarea placeholder="Notes, syllabus, prep tips..." '+
-        'onblur="updateEN(''+ex.id+'',this.value)" '+
-        'style="width:100%;margin-top:8px;background:rgba(255,255,255,.5);border:1.5px solid rgba(255,255,255,.8);border-radius:10px;padding:9px 11px;font-size:.83rem;font-family:DM Sans,sans-serif;outline:none;resize:vertical;min-height:60px;line-height:1.6;">'+escH(ex.notes||'')+'</textarea>'+
-      '</div>'+
-    '</div>';
-  }
-  cards.innerHTML=html;
-}
-
-function initExams(){renderExams();}
 
 
 // ═══ INIT ═══
@@ -1512,108 +1283,7 @@ function initApp(){
   if('Notification'in window&&Notification.permission==='granted')scheduleNotifs();
 }
 checkOnboard();
+
 </script>
-
-<script>
-// ===== SAFE INIT =====
-window.addEventListener("load",()=>{
-  const user = localStorage.getItem("username");
-
-  // show onboarding only if no name
-  if(!user){
-    document.getElementById("onboardOverlay").classList.remove("hidden");
-  } else {
-    document.getElementById("onboardOverlay").classList.add("hidden");
-    updateGreeting(user);
-  }
-
-  initSwipe();
-});
-
-// ===== SWIPE FIX (NO FREEZE) =====
-function initSwipe(){
-  let startX=0,endX=0;
-  let pages=[...document.querySelectorAll(".page")];
-  let current=pages.findIndex(p=>p.classList.contains("active"));
-
-  document.addEventListener("touchstart",e=>{
-    startX=e.touches[0].clientX;
-  });
-
-  document.addEventListener("touchend",e=>{
-    endX=e.changedTouches[0].clientX;
-    let diff=startX-endX;
-
-    if(Math.abs(diff)<60) return;
-
-    if(diff>0) go(current+1);
-    else go(current-1);
-  });
-
-  function go(i){
-    if(i<0||i>=pages.length) return;
-    pages.forEach(p=>p.classList.remove("active"));
-    pages[i].classList.add("active");
-    current=i;
-  }
-}
-
-// ===== GREETING =====
-function updateGreeting(name){
-  const greet="hi "+name+" ✨";
-  let t=document.getElementById("todayGreeting");
-  let j=document.getElementById("journalGreeting");
-  if(t) t.innerText=greet;
-  if(j) j.innerText=greet;
-}
-
-// ===== CHANGE NAME (RE-OPEN ONBOARDING) =====
-function changeName(){
-  // reopen onboarding instead of prompt
-  document.getElementById("onboardOverlay").classList.remove("hidden");
-}
-
-// after onboarding finishes, update greeting automatically
-document.addEventListener("click",e=>{
-  if(e.target && e.target.innerText && e.target.innerText.includes("Start my journey")){
-    setTimeout(()=>{
-      let name=localStorage.getItem("username");
-      if(name) updateGreeting(name);
-    },200);
-  }
-});
-</script>
-
-<!-- EDIT BUTTON (HIDDEN DURING ONBOARDING) -->
-<button id="editNameBtn" onclick="changeName()" style="
-position:fixed;
-top:10px;
-right:14px;
-z-index:1000;
-background:rgba(255,255,255,0.6);
-border:1px solid rgba(200,180,180,.4);
-padding:6px 10px;
-border-radius:10px;
-font-size:0.75rem;
-cursor:pointer;">
-⚙️ Edit Name
-</button>
-
-<script>
-// hide button when onboarding visible
-const observer=new MutationObserver(()=>{
-  const ob=document.getElementById("onboardOverlay");
-  const btn=document.getElementById("editNameBtn");
-  if(!ob||!btn) return;
-
-  if(!ob.classList.contains("hidden")){
-    btn.style.display="none";
-  } else {
-    btn.style.display="block";
-  }
-});
-observer.observe(document.body,{attributes:true,subtree:true});
-</script>
-
 </body>
 </html>
