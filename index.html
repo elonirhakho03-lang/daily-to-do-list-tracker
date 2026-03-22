@@ -55,8 +55,8 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 /* ══ SWIPE PAGES ══ */
 .pages-container{position:relative;z-index:1;width:100%;}
 .pages-track{display:block;position:relative;z-index:1;}
-.page{display:none;position:relative;animation:fadeUp .3s ease;}
-.page.active{display:block;}
+.page{display:none;position:relative;z-index:1;}
+.page.active{display:block;animation:fadeUp .3s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 /* ══ HEADERS ══ */
@@ -1386,24 +1386,17 @@ const PAGE_COUNT=6;
 let currentPageIdx=0;
 
 function showPage(idx){
-  if(idx===currentPageIdx) return;
   currentPageIdx=idx;
-  // Hide all pages, show selected with animation
-  document.querySelectorAll('.page').forEach((p,i)=>{
-    if(i===idx){
-      p.style.display='block';
-      p.style.animation='none';
-      p.offsetHeight; // force reflow
-      p.style.animation='fadeUp .3s ease';
-    } else {
-      p.style.display='none';
-    }
+  // Use CSS classes - clean and reliable
+  const pages=document.querySelectorAll('.page');
+  pages.forEach((p,i)=>{
+    p.classList.toggle('active',i===idx);
   });
-  // Update nav
+  // Update nav buttons
   document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
-  // Update dots
+  // Update indicator dots
   for(let i=0;i<6;i++){const d=document.getElementById('ndot'+i);if(d)d.classList.toggle('active',i===idx);}
-  // Scroll to top instantly
+  // Scroll to top
   window.scrollTo(0,0);
   // Init page content
   if(idx===0)initJournal();
@@ -1544,7 +1537,6 @@ function initApp(){
   });
   loadTasks();renderAll();
   // Start on journal page (page 0)
-  currentPageIdx=-1;
   showPage(0);
   setInterval(()=>{checkOverdue();},60000);
   if('Notification'in window&&Notification.permission==='granted')scheduleNotifs();
