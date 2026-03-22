@@ -1515,45 +1515,50 @@ checkOnboard();
 </script>
 
 <script>
-// SAFE SWIPE (no conflicts)
-let startX=0,endX=0;
-let pagesList=[];
-let currentIndex=0;
-
+// ===== SAFE INIT =====
 window.addEventListener("load",()=>{
-  pagesList = Array.from(document.querySelectorAll(".page"));
-  currentIndex = pagesList.findIndex(p=>p.classList.contains("active"));
-
   const user = localStorage.getItem("username");
+
+  // show onboarding only if no name
   if(!user){
     document.getElementById("onboardOverlay").classList.remove("hidden");
   } else {
     document.getElementById("onboardOverlay").classList.add("hidden");
     updateGreeting(user);
   }
+
+  initSwipe();
 });
 
-document.addEventListener("touchstart",e=>{
-  startX=e.touches[0].clientX;
-});
+// ===== SWIPE FIX (NO FREEZE) =====
+function initSwipe(){
+  let startX=0,endX=0;
+  let pages=[...document.querySelectorAll(".page")];
+  let current=pages.findIndex(p=>p.classList.contains("active"));
 
-document.addEventListener("touchend",e=>{
-  endX=e.changedTouches[0].clientX;
-  let diff=startX-endX;
-  if(Math.abs(diff)<50) return;
+  document.addEventListener("touchstart",e=>{
+    startX=e.touches[0].clientX;
+  });
 
-  if(diff>0) goPage(currentIndex+1);
-  else goPage(currentIndex-1);
-});
+  document.addEventListener("touchend",e=>{
+    endX=e.changedTouches[0].clientX;
+    let diff=startX-endX;
 
-function goPage(i){
-  if(i<0||i>=pagesList.length) return;
-  pagesList.forEach(p=>p.classList.remove("active"));
-  pagesList[i].classList.add("active");
-  currentIndex=i;
+    if(Math.abs(diff)<60) return;
+
+    if(diff>0) go(current+1);
+    else go(current-1);
+  });
+
+  function go(i){
+    if(i<0||i>=pages.length) return;
+    pages.forEach(p=>p.classList.remove("active"));
+    pages[i].classList.add("active");
+    current=i;
+  }
 }
 
-// greeting ONLY (no override)
+// ===== GREETING =====
 function updateGreeting(name){
   const greet="hi "+name+" ✨";
   let t=document.getElementById("todayGreeting");
@@ -1562,7 +1567,13 @@ function updateGreeting(name){
   if(j) j.innerText=greet;
 }
 
-// hook into existing onboarding finish
+// ===== CHANGE NAME (RE-OPEN ONBOARDING) =====
+function changeName(){
+  // reopen onboarding instead of prompt
+  document.getElementById("onboardOverlay").classList.remove("hidden");
+}
+
+// after onboarding finishes, update greeting automatically
 document.addEventListener("click",e=>{
   if(e.target && e.target.innerText && e.target.innerText.includes("Start my journey")){
     setTimeout(()=>{
@@ -1571,24 +1582,38 @@ document.addEventListener("click",e=>{
     },200);
   }
 });
-
-// edit name
-function changeName(){
-  let n=prompt("Enter your new name:");
-  if(!n) return;
-  localStorage.setItem("username",n);
-  updateGreeting(n);
-}
 </script>
 
-<button onclick="changeName()" style="
-position:fixed;top:10px;right:14px;z-index:1000;
+<!-- EDIT BUTTON (HIDDEN DURING ONBOARDING) -->
+<button id="editNameBtn" onclick="changeName()" style="
+position:fixed;
+top:10px;
+right:14px;
+z-index:1000;
 background:rgba(255,255,255,0.6);
 border:1px solid rgba(200,180,180,.4);
-padding:6px 10px;border-radius:10px;
-font-size:0.75rem;cursor:pointer;">
+padding:6px 10px;
+border-radius:10px;
+font-size:0.75rem;
+cursor:pointer;">
 ⚙️ Edit Name
 </button>
+
+<script>
+// hide button when onboarding visible
+const observer=new MutationObserver(()=>{
+  const ob=document.getElementById("onboardOverlay");
+  const btn=document.getElementById("editNameBtn");
+  if(!ob||!btn) return;
+
+  if(!ob.classList.contains("hidden")){
+    btn.style.display="none";
+  } else {
+    btn.style.display="block";
+  }
+});
+observer.observe(document.body,{attributes:true,subtree:true});
+</script>
 
 </body>
 </html>
