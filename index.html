@@ -69,6 +69,9 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .task-item.dragging{opacity:.3;}
 .task-item.drag-over{border-top:2px solid var(--rose);}
 @keyframes slideIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+/* PETALS */
+.petal{position:fixed;top:-40px;pointer-events:none;z-index:0;opacity:0;border-radius:50% 0 50% 0;animation:petalFall linear infinite;}
+@keyframes petalFall{0%{transform:translateY(0) rotate(0deg) scale(1);opacity:0;}5%{opacity:.75;}85%{opacity:.5;}100%{transform:translateY(110vh) rotate(720deg) scale(.6);opacity:0;}}
 .drag-handle{color:rgba(150,130,130,.35);font-size:.95rem;cursor:grab;padding:2px 3px;flex-shrink:0;line-height:1;user-select:none;}
 .chk{width:20px;height:20px;border-radius:50%;border:2px solid rgba(150,130,130,.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all .22s;background:rgba(255,255,255,.6);cursor:pointer;}
 .done .chk{background:linear-gradient(135deg,#a8d8b0,#7bbfb5);border-color:transparent;color:#fff;}
@@ -527,27 +530,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
       </div>
       <div style="font-size:.7rem;color:var(--text-soft);margin-top:8px;" id="stepsNote">Auto on Android Chrome. Or enter manually above.</div>
     </div>
-    <!-- QUOTE -->
+    <!-- BIBLE VERSE -->
     <div class="journal-quote">
-      <div class="quote-text" id="quoteText">Loading your daily quote...</div>
+      <div style="font-size:.72rem;font-weight:600;letter-spacing:.08em;color:var(--rose);margin-bottom:10px;text-transform:uppercase;">✝ Verse of the Day</div>
+      <div class="quote-text" id="quoteText">Loading your verse...</div>
       <div class="quote-author" id="quoteAuthor"></div>
-      <button class="quote-refresh" onclick="newQuote()">🔄 New quote</button>
-    </div>
-
-    <!-- COMMUNITY THOUGHTS -->
-    <div class="community-card">
-      <h3>💬 Community thoughts</h3>
-      <div class="community-quote-display" id="communityQuoteDisplay">Loading shared thoughts...</div>
-      <div class="community-author" id="communityQuoteAuthor">— anonymous</div>
-      <div class="community-nav">
-        <button class="community-nav-btn" onclick="prevCommunityQuote()">&#8249;</button>
-        <div class="community-count" id="communityCount">0 / 0</div>
-        <button class="community-nav-btn" onclick="nextCommunityQuote()">&#8250;</button>
-      </div>
-      <div class="share-thought-area">
-        <textarea id="shareThoughtText" placeholder="Share a thought or quote that inspired you today... 🌸"></textarea>
-        <button class="share-btn" onclick="submitCommunityThought()">Share anonymously ✦</button>
-      </div>
+      <button class="quote-refresh" onclick="newQuote()">🔄 New verse</button>
     </div>
     <!-- TODAY'S ENTRY -->
     <div class="journal-entry-card">
@@ -652,21 +640,26 @@ const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunda
 const DAY_SHORT=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
 const QUOTES=[
-  {text:"The secret of getting ahead is getting started.",author:"Mark Twain"},
-  {text:"You don't have to be great to start, but you have to start to be great.",author:"Zig Ziglar"},
-  {text:"Small daily improvements over time lead to stunning results.",author:"Robin Sharma"},
-  {text:"Discipline is the bridge between goals and accomplishment.",author:"Jim Rohn"},
-  {text:"Take care of your body. It's the only place you have to live.",author:"Jim Rohn"},
-  {text:"The journey of a thousand miles begins with one step.",author:"Lao Tzu"},
-  {text:"You are enough just as you are.",author:"Meghan Markle"},
-  {text:"Believe you can and you're halfway there.",author:"Theodore Roosevelt"},
-  {text:"Your only limit is your mind.",author:"Anonymous"},
-  {text:"Every day is a second chance.",author:"Anonymous"},
-  {text:"She believed she could, so she did.",author:"R.S. Grey"},
-  {text:"Do something today that your future self will thank you for.",author:"Sean Patrick Flanery"},
-  {text:"Progress, not perfection.",author:"Anonymous"},
-  {text:"Consistency is more important than perfection.",author:"Anonymous"},
-  {text:"You've survived 100% of your worst days so far.",author:"Anonymous"},
+  {text:"I can do all things through Christ who strengthens me.",author:"Philippians 4:13"},
+  {text:"The Lord is my shepherd; I shall not want.",author:"Psalm 23:1"},
+  {text:"For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",author:"John 3:16"},
+  {text:"Trust in the Lord with all your heart and lean not on your own understanding.",author:"Proverbs 3:5"},
+  {text:"Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.",author:"Joshua 1:9"},
+  {text:"She is clothed with strength and dignity; she can laugh at the days to come.",author:"Proverbs 31:25"},
+  {text:"For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.",author:"Jeremiah 29:11"},
+  {text:"Come to me, all you who are weary and burdened, and I will give you rest.",author:"Matthew 11:28"},
+  {text:"The Lord is my light and my salvation — whom shall I fear?",author:"Psalm 27:1"},
+  {text:"Do not be anxious about anything, but in every situation, by prayer and petition, present your requests to God.",author:"Philippians 4:6"},
+  {text:"Even youths grow tired and weary, but those who hope in the Lord will renew their strength.",author:"Isaiah 40:31"},
+  {text:"Love is patient, love is kind. It does not envy, it does not boast, it is not proud.",author:"1 Corinthians 13:4"},
+  {text:"This is the day the Lord has made; let us rejoice and be glad in it.",author:"Psalm 118:24"},
+  {text:"Cast all your anxiety on him because he cares for you.",author:"1 Peter 5:7"},
+  {text:"Your word is a lamp for my feet, a light on my path.",author:"Psalm 119:105"},
+  {text:"Be joyful in hope, patient in affliction, faithful in prayer.",author:"Romans 12:12"},
+  {text:"Give, and it will be given to you — a good measure, pressed down, shaken together and running over.",author:"Luke 6:38"},
+  {text:"The name of the Lord is a fortified tower; the righteous run to it and are safe.",author:"Proverbs 18:10"},
+  {text:"Let your light shine before others, that they may see your good deeds and glorify your Father in heaven.",author:"Matthew 5:16"},
+  {text:"But seek first his kingdom and his righteousness, and all these things will be given to you as well.",author:"Matthew 6:33"},
 ];
 
 const FUN_FACTS=[
@@ -1262,6 +1255,21 @@ let deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;document.getElementById('installBanner').classList.remove('hidden');});
 document.getElementById('installBtn').onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;document.getElementById('installBanner').classList.add('hidden');};
 document.getElementById('closeInstall').onclick=()=>document.getElementById('installBanner').classList.add('hidden');
+// ═══ PETAL ANIMATIONS ═══
+(function spawnPetals(){
+  const colors=['#f9c8cc','#f7b8c4','#f5d0e0','#e8c0d8','#fadadd','#f2b5c8','#ffe0ec','#fbbfd0'];
+  function makePetal(){
+    const p=document.createElement('div');
+    p.className='petal';
+    const size=Math.random()*12+6;
+    p.style.cssText=`width:${size}px;height:${size*1.4}px;left:${Math.random()*100}vw;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*8+7}s;animation-delay:${Math.random()*10}s;border-radius:${Math.random()>0.5?'50% 0 50% 0':'0 50% 0 50%'};opacity:.8;transform:rotate(${Math.random()*360}deg);`;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),(Math.random()*8+7+10)*1000);
+  }
+  for(let i=0;i<18;i++)makePetal();
+  setInterval(()=>makePetal(),1800);
+})();
+
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
 
 // ═══ INIT ═══
