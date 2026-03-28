@@ -1,4 +1,4 @@
-const CACHE = 'dailyrun-v5';
+const CACHE = 'dailyrun-v6';
 const ASSETS = ['./index.html', './manifest.json'];
 
 // Install — cache assets
