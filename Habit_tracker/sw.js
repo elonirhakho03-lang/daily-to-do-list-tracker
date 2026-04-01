@@ -1,13 +1,11 @@
-const CACHE = 'dailyrun-v6';
+const CACHE = 'dailyrun-v11';
 const ASSETS = ['./index.html', './manifest.json'];
 
-// Install — cache assets
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
   self.skipWaiting();
 });
 
-// Activate — delete old caches
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
@@ -17,7 +15,6 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 
-// Fetch — NETWORK FIRST, fall back to cache
 self.addEventListener('fetch', e => {
   e.respondWith(
     fetch(e.request)
@@ -26,9 +23,7 @@ self.addEventListener('fetch', e => {
         caches.open(CACHE).then(c => c.put(e.request, copy));
         return res;
       })
-      .catch(() => {
-        return caches.match(e.request);
-      })
+      .catch(() => caches.match(e.request))
   );
 });
 
